@@ -44,10 +44,10 @@ function CodeScreen() {
             </button>
           </div>
           <div className="h-[25vh] bg-lightDark overflow-auto  bottom-0 border-t-[8px] transition duration-300 text-light border-dark hover:border-themeblue w-full">
-            <h1 className="text-base font-semibold uppercase my-2">
+            <h1 className="text-base font-semibold uppercase my-2 px-3">
               Output 👇
             </h1>
-            <pre>{currentQuestion.output}</pre>
+            <pre className="px-3">{currentQuestion.output}</pre>
           </div>
         </>
       ) : (

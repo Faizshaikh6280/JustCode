@@ -370,6 +370,405 @@ Second array elements : 1 2 `,
     difficulty: "medium",
     timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(N)`,
   },
+  {
+    questionName:
+      "Enter an array from user and remove the duplicate values and fill with zero",
+    code: `void removeDublicatesFilledWithZero(int arr[],int size){
+      bubbleSort(arr,size);
+      int prev = arr[0];
+      for(int i = 1;i < size;i++){
+          if(arr[i] == prev){
+              arr[i]  = 0;
+          }else prev = arr[i];
+      }
+  }
+  
+  
+  void main(){
+  
+      int size;
+      printf("Enter a size of array : ");
+      scanf("%d",&size);
+      int arr[size];
+      printf("Enter the elements of an array : ");
+      for(int i = 0; i < size;i++){
+          scanf("%d",arr+i);
+      }
+      removeDublicatesFilledWithZero(arr,size);
+      for(int i = 0;i < size;i++){
+          printf("%d ",arr[i]);
+      }
+  }  
+  `,
+    output: `Enter a size of array : 5
+    Enter the elements of an array : 1 2 2 3 5
+    1 2 0 3 5  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N^2) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Enter an array from user and count the duplicate values",
+    code: `int countDublicates(int arr[],int size){
+      int count = 0;
+      bubbleSort(arr,size);
+      int prev = arr[0];
+      for(int i = 1;i<size;i++){
+          if(arr[i] == prev) {
+              count++;
+          }else prev = arr[i];
+      }
+      return count;
+  }
+  void main(){
+  
+      int size;
+      printf("Enter a size of array : ");
+      scanf("%d",&size);
+      int arr[size];
+      printf("Enter the elements of an array : ");
+      for(int i = 0; i < size;i++){
+          scanf("%d",arr+i);
+      }
+      printf("No. of dublicates in array is : %d",countDublicates(arr,size));
+  }
+  `,
+    output: `Enter a size of array : 10
+    Enter the elements of an array : 1 2 3 2 5 6 5 4 5 4
+    No. of dublicates in array is : 4`,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N^2) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "Enter an array from user and print all possible combinations of the elements",
+    code: `void printAllCombinations(int arr[],int size){
+      for(int i = 0;i <size;i++){
+          for(int j = i+1; j <size;j++){
+              for(int k = i; k <= j;k++){
+                  printf("%d ",arr[k]);
+              }
+               printf("\n");
+          }
+          printf("\n");
+      }
+  }
+  
+  void main(){
+  
+      int size;
+      printf("Enter a size of array : ");
+      scanf("%d",&size);
+      int arr[size];
+      printf("Enter the elements of an array : ");
+      for(int i = 0; i < size;i++){
+          scanf("%d",arr+i);
+      }
+      printAllCombinations(arr,size);
+  }
+  `,
+    output: `Enter a size of array : 5 
+    Enter the elements of an array : 1 2 3 4 5
+    1 2       
+    1 2 3     
+    1 2 3 4   
+    1 2 3 4 5 
+    
+    2 3       
+    2 3 4     
+    2 3 4 5   
+    
+    3 4       
+    3 4 5     
+    
+    4 5  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N^3) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "Enter an array from user and print all the palindrone numbers ",
+    code: `int reverseNum(int num){
+      int rev = 0;
+      while(num > 0)    {
+          int ld = num % 10;
+          rev = rev*10 + ld;
+          num /= 10;
+      }
+      return rev;
+  }
+  
+  int isPallindrom(int num){
+      if(num == reverseNum(num)) return 1;
+      else return 0;
+  }
+  
+  
+  void main(){
+  
+      int size;
+      printf("Enter a size of array : ");
+      scanf("%d",&size);
+      int arr[size];
+      printf("Enter the elements of an array : ");
+      for(int i = 0; i < size;i++){
+          scanf("%d",arr+i);
+      }
+      /// printing pallindorm 
+      for(int i = 0;i < size;i++){
+          if(isPallindrom(arr[i]) == 1) printf("%d ",arr[i]);
+      }
+  }  
+  `,
+    output: `Enter a size of array : 5
+    Enter the elements of an array : 121 520 1221 320 101
+    121 1221 101 `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "Enter two arrays from the user and check they are same or not",
+    code: `int isArraySame(int arr1[],int arr2[],int size1,int size2){
+      if(size1 != size2) return 0;
+      for(int i = 0; i < size1;i++){
+          if(arr1[i] != arr2[i])  return 0;
+      }
+      return 1;
+  }
+  
+  void main(){
+  
+      int size1,size2;
+      printf("Enter a size of array 1 : ");
+      scanf("%d",&size1);
+      int arr1[size1];
+      printf("Enter the elements of an array1 : ");
+      for(int i = 0; i < size1;i++){
+          scanf("%d",arr1+i);
+      }
+      printf("Enter a size of array 2: ");
+      scanf("%d",&size2);
+      int arr2[size2];
+      printf("Enter the elements of an array2 : ");
+      for(int i = 0; i < size2;i++){
+          scanf("%d",arr2+i);
+      }
+  
+      if(isArraySame(arr1,arr2,size1,size2) == 1) printf("Both Array are same!");
+      else printf("Arrays are not same!");
+      
+  }   
+  `,
+    output: `Enter a size of array 1 : 5
+    Enter the elements of an array1 : 1 2 3 4 5
+    Enter a size of array 2: 5
+    Enter the elements of an array2 : 1 2 3 4 5 
+    Both Array are same! `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "Merge the two sorted arrays into one array but in sorted order ",
+    code: `// sorting 
+    void bubbleSort(int arr[],int size){
+        for(int i = 0;i < size - 1;i++){
+            for(int j = 0;j < size - 1 - i;j++){
+                if(arr[j] > arr[j+1]){
+                    int temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                }
+            }
+        }
+    }
+    //Main Logic
+    void mergeSort(int arr1[],int arr2[],int size1,int size2,int mergeArr[]){
+      int size3 = size1 + size2;
+      int i = 0,j = 0,k = 0;
+  
+      bubbleSort(arr1,size1);
+      bubbleSort(arr2,size2);
+  
+      while(i < size1 && j < size2){
+          if(arr1[i] < arr2[j]){
+              mergeArr[k] = arr1[i];
+              i++;
+          }else {
+              mergeArr[k] = arr2[j];
+              j++;
+          }
+          k++;
+      }
+  
+    while(i < size1 ){
+      mergeArr[k] = arr1[i];
+      i++;
+      k++;
+     }
+    while(j < size2 ){
+      mergeArr[k] = arr2[j];
+      j++;
+      k++;
+     }
+  
+  }
+  
+  void main(){
+  
+      int size1,size2;
+      printf("Enter a size of array 1 : ");
+      scanf("%d",&size1);
+      int arr1[size1];
+      printf("Enter the elements of an array1 : ");
+      for(int i = 0; i < size1;i++){
+          scanf("%d",arr1+i);
+      }
+      printf("Enter a size of array 2: ");
+      scanf("%d",&size2);
+      int arr2[size2];
+      printf("Enter the elements of an array2 : ");
+      for(int i = 0; i < size2;i++){
+          scanf("%d",arr2+i);
+      }
+  
+      int size3 = size1  + size2;
+      int mergeArr[size3];
+  
+      mergeSort(arr1,arr2,size1,size2,mergeArr);
+  
+      printf("Merged Array : ");
+      for(int i = 0;i < size3; i++){
+          printf("%d ",mergeArr[i]);
+      }
+  
+  
+  }
+    
+  `,
+    output: `Enter a size of array 1 : 5
+    Enter the elements of an array1 : 4 52 65 85 45
+    Enter a size of array 2: 3
+    Enter the elements of an array2 : 5 0 7
+    Merged Array : 0 4 5 7 45 52 65 85  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N^2) \n Space Complexity is O(N)`,
+  },
+  {
+    questionName: "Find the local maxima in the array ",
+    code: `int localMaxima(int arr[],int size){
+      for(int i = 1; i < size - 1;i++){
+          if(arr[i] > arr[i-1] && arr[i] > arr[i+1]) return arr[i];
+      }
+  }
+  
+  void main(){
+  
+      int size;
+      printf("Enter a size of array : ");
+      scanf("%d",&size);
+      int arr[size];
+      printf("Enter the elements of an array: ");
+      for(int i = 0; i < size;i++){
+          scanf("%d",arr+i);
+      }
+      printf("First local maxima of array is  : %d",localMaxima(arr,size));
+  }
+  `,
+    output: `Enter a size of array : 5
+    Enter the elements of an array: 1 2 3 2 5
+    First local maxima of array is  : 3 `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Find the local minima in the array ",
+    code: `int localMinima(int arr[],int size){
+      for(int i = 1; i < size - 1;i++){
+          if(arr[i] < arr[i-1] && arr[i] < arr[i+1]) return arr[i];
+      }
+  }
+  void main(){
+  
+      int size;
+      printf("Enter a size of array : ");
+      scanf("%d",&size);
+      int arr[size];
+      printf("Enter the elements of an array: ");
+      for(int i = 0; i < size;i++){
+          scanf("%d",arr+i);
+      }
+      printf("First local minima of array is  : %d",localMinima(arr,size));
+  }
+    
+  `,
+    output: `Enter a size of array : 5
+    Enter the elements of an array: 4 2 1 3 5
+    First local maxima of array is  : 1
+  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Trapping Rain Water Problem (Bonus)",
+    code: `#include <math.h>
+    int calcTrappedWater(int arr[],int leftBound[],int rightBound[],int size,int width){
+      int trappedWaterSum = 0;
+      for(int i = 0;i < size;i++){
+          int trappedWater = (fmin(leftBound[i],rightBound[i]) - arr[i]) * width;
+          trappedWaterSum += trappedWater;
+      }
+  
+      return trappedWaterSum;
+  }
+  void main(){
+  
+      int size,width;
+      printf("Enter a size of array : ");
+      scanf("%d",&size);
+      printf("Enter a width of bar : ");
+      scanf("%d",&width);
+      int arr[size];
+      printf("Enter the height of an bars: ");
+      for(int i = 0; i < size;i++){
+          scanf("%d",arr+i);
+      }
+      int leftBound[size];
+      int rightBound[size];
+      leftMaxBound(arr,leftBound,size);
+      rightMaxbound(arr,rightBound,size);
+      
+      int ans = calcTrappedWater(arr,leftBound,rightBound,size,width);
+  
+      printf("Total amount of water that can be trapped is : %d",ans);
+  }
+  `,
+    output: `Enter a size of array : 7
+    Enter a width of bar : 1
+    Enter the height of an bars: 4 2 0 6 3 2 5
+    Total amount of water that can be trapped is : 11
+  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
 ];
 
 questions.forEach((ques, indx) => {

@@ -8,7 +8,7 @@ function QuestionItem({ question, indx }) {
     <li
       className={`${
         currentQuestion.id === id ? "border-light border-l-2" : ""
-      } px-4 py-3 flex justify-between text-base`}
+      } px-4 py-3 flex justify-between text-base gap-2`}
     >
       <Link to={`${id}`}>
         <h4 className="text-light hover:text-themeblue">
