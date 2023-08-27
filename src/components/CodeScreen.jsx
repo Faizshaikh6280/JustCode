@@ -1,7 +1,7 @@
 import { useQuestion } from "../context/QuestionContext";
 
 function CodeScreen() {
-  const { currentQuestion, dispatch, bookmarks } = useQuestion();
+  const { currentQuestion, dispatch, bookmarks, isLoading } = useQuestion();
 
   const isCurrentInBookmark = bookmarks.some(
     (el) => el.id === currentQuestion.id

@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuestion } from "../context/QuestionContext";
 import { useEffect } from "react";
+import LoaderSpinner from "../ui/LoaderSpinner";
 
 function Question() {
-  const { getQuestion, isLoading, currentQuestion, bookmarks } = useQuestion();
+  const { getQuestion, isLoading } = useQuestion();
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(
@@ -13,8 +14,7 @@ function Question() {
     [id, getQuestion]
   );
 
-  if (isLoading)
-    return <p className="text-light text-center uppercase">Loading...</p>;
+  if (isLoading) return <LoaderSpinner />;
 
   return (
     <div className="text-light flex justify-center flex-col items-center">
