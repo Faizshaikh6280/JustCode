@@ -128,7 +128,7 @@ function QuestionProvider({ children }) {
 
       setTimeout(function () {
         dispatch({ type: "question/loaded", payload: id });
-      }, 0);
+      }, 500);
     },
     [currentQuestion.id]
   );

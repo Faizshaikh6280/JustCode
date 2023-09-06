@@ -769,9 +769,274 @@ Second array elements : 1 2 `,
     difficulty: "hard",
     timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
   },
+  {
+    questionName: "convert in uppercase",
+    code: `#include <math.h>
+    char toUpperCase(char ch){
+      return (char)(ch&'_');
+  }
+  
+  void main(){
+      int size;
+      printf("Enter the size of the string : ");
+      scanf("%d",&size);
+  
+      char str[size];
+      printf("Enter a string : ");
+      scanf("%s",str);
+  
+      for(int i = 0; i < size;i++){
+          str[i] = toUpperCase(str[i]);
+      }
+      
+      printf("Upper case form : %s",str);
+  }
+  `,
+    output: `Enter the size of the string : 5
+    Enter a string : faiz
+    Upper case form : FAIZ
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "convert in lower",
+    code: `char toLowerCase(char ch){
+      return (char)(ch|' ');
+  }
+  
+  void main(){
+      int size;
+      printf("Enter the size of the string : ");
+      scanf("%d",&size);
+  
+      char str[size];
+      printf("Enter a string : ");
+      scanf("%s",str);
+  
+      int i = 0;
+      while (str[i]){
+          str[i] = toLowerCase(str[i]);
+          i++;
+      }
+      printf("Lower case form : %s",str);
+  }
+  `,
+    output: `Enter the size of the string : 5
+    Enter a string : FaiZ
+    Lower case form : faiz
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "convert into sentence case",
+    code: `#include <conio.h>
+    char toUpperCase(char ch){
+      return (char)(ch&'_');
+  }
+  
+  void main(){
+    void main(){
+
+      char str[50];
+      printf("Enter a string : ");
+      fgets(str,sizeof(str),stdin);
+      int i = 0;
+      str[0] =  toUpperCase(str[0]);
+      printf("%s",str);
+  }
+  `,
+    output: `Enter a string : faiz alam
+    Faiz alam
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "convert into toggle case",
+    code: `#include <conio.h>
+    char toUpperCase(char ch){
+      return (char)(ch&'_');
+  }
+  
+ 
+  void main(){
+    char str[50];
+    printf("Enter a string : ");
+    fgets(str,sizeof(str),stdin);
+    int i = 0;
+   while(str[i]){
+    if(i%2 == 0){
+        str[i] = toUpperCase(str[i]);
+    }
+    i++;
+   }
+    // str[0] = toUpperCase(str[0]);
+    printf("Toggle case is : %s",str);
+}   
+  `,
+    output: `Enter a string : hello world
+    Toggle case is : HeLlO WoRlD    
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "convert into title case",
+    code: `#include <conio.h>
+    char toUpperCase(char ch){
+      return (char)(ch&'_');
+  }
+  
+ 
+void main(){
+  char str[50];
+  printf("Enter a string : ");
+  fgets(str,sizeof(str),stdin);
+  int i = 1;
+ while(str[i]){
+  if(str[i] == ' '){
+      str[i+1] = toUpperCase(str[i+1]);
+  }
+  i++;
+ }
+  str[0] = toUpperCase(str[0]);
+  printf("%s",str);
+}   
+  `,
+    output: `Enter a string : how are you sir?
+    How Are You Sir?    
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "final length of the string",
+    code: `#include <conio.h>
+    void main(){
+    char str[50];
+    printf("Enter a string : ");
+    fgets(str,sizeof(str),stdin);
+    int i = 0;
+   while(str[i]) i++;   
+    printf("Length is : %d",i-1);
+}   
+  `,
+    output: `Enter a string : faiz alam                                              
+    Length is : 9   
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "compare those string",
+    code: `#include <conio.h>
+    int getlen(char str[]){
+      int l = 0;
+      while(str[l]) l++;
+      return l-1;
+  }
+  
+  int isEqual(char str1[],char str2[]){
+      if(getlen(str1) != getlen(str2)) return 0;
+  
+      int i = 0;
+      while(str1[i] && str2[i]){
+          if(str1[i] != str2[i]) return 0;
+          i++;
+      }
+  
+      return 1;
+  }
+  
+  void main(){
+      char str1[50];
+      char str2[50];
+  
+      printf("Enter a string 1: ");
+      fgets(str1,sizeof(str1),stdin);
+  
+      printf("Enter a string 2: ");
+      fgets(str2,sizeof(str2),stdin);
+      
+      if(isEqual(str1,str2)) printf("Strings are equal");
+      else printf("Strings are not equal");
+  
+  }   
+  `,
+    output: `Enter a string 1: faiz alam
+
+    Enter a string 2: faiz aalm
+                                                                            
+    Strings are not equal   
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "concatenate the string",
+    code: `#include <conio.h>
+    void main(){
+      char str1[50];
+      char str2[50];
+      int i = 0,k = 0;
+  
+      printf("Enter a string 1: ");
+      fgets(str1,sizeof(str1),stdin);
+  
+      printf("\nEnter a string 2: ");
+      fgets(str2,sizeof(str2),stdin);
+  
+     int len = getlen(str1) + getlen(str2);
+     char str3[len];
+     while(i < getlen(str1)){
+      str3[k] = str1[i];
+      k++;
+      i++;
+     }
+     i = 0;
+     while(i < getlen(str2)){
+      str3[k] = str2[i];
+      k++;
+      i++;
+     }
+     i = 0;
+     printf("Concat of string  : ");
+     while(i < getlen(str3)){
+      printf("%c",str3[i]);
+      i++;
+     }
+  }   
+  `,
+    output: `Enter a string 1: faiz
+
+    Enter a string 2: alam
+    Concat of string  : faizalam
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
 ];
 
 questions.forEach((ques, indx) => {
   ques.id = indx + 1;
 });
+
 export { questions };
