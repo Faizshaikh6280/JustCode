@@ -802,6 +802,630 @@ Second array elements : 1 2 `,
     timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
   },
   {
+    questionName:
+      "Create a dictionary with search create and delete operations.",
+    code: `#include <math.h>
+    #include <stdio.h>
+    #include <conio.h>
+    #include <Math.h>
+    #include <string.h>
+    //convert in uppercase ?
+    char toUpperCase(char ch){
+        return (char)(ch&'_');
+    }
+    //convert in uppercase ?
+    char toLowerCase(char ch){
+        return (char)(ch|' ');
+    }
+    
+    int getlen(char str[]){
+        int l = 0;
+        while(str[l]) l++;
+        return l-1;
+    }
+    
+    int isEqual(char str1[],char str2[]){
+        if(getlen(str1) != getlen(str2)) return 0;
+    
+        int i = 0;
+        while(str1[i] && str2[i]){
+            if(str1[i] != str2[i]) return 0;
+            i++;
+        }
+    
+        return 1;
+    };
+    //copy that string into another string ?
+    void copyStr(int str1[],int str2[]){
+        int i = 0;
+        while(str1[i]){
+           str2[i] = str1[i];
+           i++;
+        }
+    }
+    int isPallindrom(char str[]){
+        int n = getlen(str);
+        int s = 0,e = n-1;
+        while(s < e){
+            if(str[s] != str[e]) return 0;
+            s++;
+            e--;
+        }
+        return 1;
+    }
+    
+    void reverse(char str[]){
+        int n = getlen(str);
+        int s = 0,e = n-1;
+        while(s < e){
+         char temp = str[s];
+         str[s] = str[e];
+         str[e] = temp;
+         s++;
+         e--;
+        }
+    }
+    
+    int difference(char str1[],char str2[],int i){
+        return (int)(str1[i] - str2[i]);
+    }
+    int isCharExists(char str[],char ch){
+        int i = 0;
+        while(str[i]){
+            if(str[i] == ch) return 1;
+            i++;
+        }
+        return 0;
+    }
+    
+    
+    
+    int countVowel(char str[]){
+        int i = 0;
+        int count = 0;
+        while(str[i]){
+          if(str[i] == 'a' || str[i] == 'A' ||  str[i] == 'e' || str[i] == 'E' || str[i] == 'o' || str[i] == 'O' || str[i] == 'i' || str[i] == 'I' || str[i] == 'u' || str[i] == 'U'){
+            count++;
+          }
+          i++;
+        }
+        return count;
+    }
+    
+    
+    char convertIntoChar(char str[]){
+         int sum = 0;
+        int i = 0;
+        while(str[i]){
+            sum += (int)str[i];
+            i++;
+        }
+        return (char)(sum);
+    }
+    
+    
+    int convertIntoInt(char str1[]){
+        int ans = 0;
+        int i = 0;
+        while(str1[i] != '\0'){
+          ans = ans*10 + (str1[i] - '0');
+          i++;
+        }
+    
+        return ans;
+    }
+    float convertIntoFloat(char str1[]){
+       int integer = 0;
+        int i = 0;
+        while(str1[i] != 46){
+          integer = integer*10 + (str1[i] - '0');
+          i++;
+        }
+        float decimal = 0;
+        i++;
+        while(str1[i]){
+          decimal = decimal*10 + (str1[i] - '0');
+          i++;
+        }
+        while(decimal > 1){
+            decimal /= 10;
+        }
+        float ans = integer + decimal;
+        return ans;
+    }
+    
+    
+    void countWords(){
+         char str1[20],c;
+        int indx = 0;
+       while((c = getchar()) != ';'){
+          str1[indx++] = c;
+       }
+        str1[indx] = '\0';
+        int numChar = 0,numWord = 0,numSpace = 0,numlines = 0,j = 0;
+        int i = 0;
+        while(str1[i]){
+            if(str1[i] != ' ' && str1[i] != 10) {
+                numChar++;
+                j++;
+            }
+            else{
+                if(str1[i] != 10) numSpace++;
+                if(numChar > 0){
+                numWord++;
+                numChar = 0;
+                };
+                
+            };
+            if(str1[i] == 10) numlines++;
+            i++;
+        }
+        printf("Number of characters is : %d \n", j);
+        printf("Number of Words is : %d \n", numWord+1);
+        printf("Number of spaces is : %d \n", numSpace);
+        printf("Number of lines is : %d \n", numlines+1);
+    }
+    
+    void printPossibility(char p[],char up[]){
+      if(strlen(up) <= 0){
+        printf("%s ",p);
+        return;
+      }
+      char ch = up[0];
+      char newU[strlen(up)-1];
+      for(int i = 0;i < (strlen(up)-1);i++){
+        newU[i] = up[i+1];
+      }
+      char newP[strlen(p)+1];
+      for(int i = 0;i < (strlen(p));i++){
+        newP[i] = p[i];
+      }
+      newP[strlen(p)] = ch;
+    }
+    
+    void dictionary(){
+        char *words[10];
+        char *meanings[10];
+    
+    
+        char word[30],meaning[30];
+        int i = 0;
+        char choice;
+        while(choice != '4'){
+          printf("\n****MENU*****\n1.Create\n2.Delete\n3.Search\n4.Exit\n");
+          fflush(stdin);
+          choice = getchar();
+          switch(choice){
+            case '1':
+            printf("Add a word : ");
+            scanf("%s",word);
+            printf("Add meaning of word : ");
+            scanf("%s",meaning);
+            words[i] = word;
+            meanings[i] = meaning;
+            i++;
+            break;
+            case '2':
+            printf("\nEnter a word to be deleted: \n");
+            char word[30];
+            scanf("%s",word);
+            int delIndx = -1;
+            for(int i = 0; i < 10;i++){
+                if(strcmp(words[i],word) == 0) {
+                    delIndx = i;
+                    break;
+                }
+            }
+            if(delIndx == -1) {
+                printf("Word does not exits!");
+                break;
+            }
+            // left shifting elements.
+            for(int i = delIndx;i < 9;i++){
+                words[i] = words[i+1];
+            }
+            for(int i = delIndx;i < 9;i++){
+                meanings[i] = meanings[i+1];
+            }
+            i--;
+            break;
+            case '3':
+            printf("Enter a word to be searched : ");
+            scanf("%s",word);
+            int indx = -1;
+            for(int i = 0; i < 10;i++){
+                printf("%s ",words[i]);
+                if(strcmp(words[i],word) == 0) {
+                    indx = i;
+                    break;
+                }
+            }
+            if(indx != -1) printf("\nMeaning of the %s is : %s\n",word,meanings[indx]);
+            else  printf("Word does not exits!");
+            break;
+          }
+        }
+    }
+    
+    
+    void main(){
+        dictionary();
+     
+    }   
+    
+    
+  `,
+    output: `****MENU*****
+    1.Create     
+    2.Delete     
+    3.Search     
+    4.Exit       
+    1
+    Add a word : apple
+    Add meaning of word : saib
+    
+    ****MENU*****
+    1.Create     
+    2.Delete     
+    3.Search     
+    4.Exit       
+    3
+    Enter a word to be searched : apple
+    apple
+    Meaning of the apple is : saib
+    
+    ****MENU*****
+    1.Create
+    2.Delete
+    3.Search
+    4.Exit
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "Count the no. of characters,words,spaces and lines in string",
+    code: `#include <math.h>
+    void main(){
+      char str1[20],c;
+      int indx = 0;
+     while((c = getchar()) != ';'){
+        str1[indx++] = c;
+     }
+      str1[indx] = '\0';
+      int numChar = 0,numWord = 0,numSpace = 0,numlines = 0,j = 0;
+      int i = 0;
+      while(str1[i]){
+          if(str1[i] != ' ' && str1[i] != 10) {
+              numChar++;
+              j++;
+          }
+          else{
+              if(str1[i] != 10) numSpace++;
+              if(numChar > 0){
+              numWord++;
+              numChar = 0;
+              };
+              
+          };
+          if(str1[i] == 10) numlines++;
+          i++;
+      }
+      printf("Number of characters is : %d \n", j);
+      printf("Number of Words is : %d \n", numWord+1);
+      printf("Number of spaces is : %d \n", numSpace);
+      printf("Number of lines is : %d \n", numlines+1);
+  }   
+  `,
+    output: `hi faiz
+    how     
+    are 
+    you;
+    Number of characters is : 15 
+    Number of Words is : 5       
+    Number of spaces is : 1      
+    Number of lines is : 4
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Trim the spaces from both end",
+    code: `#include <math.h>
+    #include <stdio.h>
+    #include <conio.h>
+    #include <Math.h>
+    #include <string.h>
+    //convert in uppercase ?
+    char toUpperCase(char ch){
+        return (char)(ch&'_');
+    }
+    //convert in uppercase ?
+    char toLowerCase(char ch){
+        return (char)(ch|' ');
+    }
+    
+    int getlen(char str[]){
+        int l = 0;
+        while(str[l]) l++;
+        return l-1;
+    }
+    
+    int isEqual(char str1[],char str2[]){
+        if(getlen(str1) != getlen(str2)) return 0;
+    
+        int i = 0;
+        while(str1[i] && str2[i]){
+            if(str1[i] != str2[i]) return 0;
+            i++;
+        }
+    
+        return 1;
+    };
+    //copy that string into another string ?
+    void copyStr(int str1[],int str2[]){
+        int i = 0;
+        while(str1[i]){
+           str2[i] = str1[i];
+           i++;
+        }
+    }
+    int isPallindrom(char str[]){
+        int n = getlen(str);
+        int s = 0,e = n-1;
+        while(s < e){
+            if(str[s] != str[e]) return 0;
+            s++;
+            e--;
+        }
+        return 1;
+    }
+    
+    void reverse(char str[]){
+        int n = getlen(str);
+        int s = 0,e = n-1;
+        while(s < e){
+         char temp = str[s];
+         str[s] = str[e];
+         str[e] = temp;
+         s++;
+         e--;
+        }
+    }
+    
+    int difference(char str1[],char str2[],int i){
+        return (int)(str1[i] - str2[i]);
+    }
+    int isCharExists(char str[],char ch){
+        int i = 0;
+        while(str[i]){
+            if(str[i] == ch) return 1;
+            i++;
+        }
+        return 0;
+    }
+    
+    
+    
+    int countVowel(char str[]){
+        int i = 0;
+        int count = 0;
+        while(str[i]){
+          if(str[i] == 'a' || str[i] == 'A' ||  str[i] == 'e' || str[i] == 'E' || str[i] == 'o' || str[i] == 'O' || str[i] == 'i' || str[i] == 'I' || str[i] == 'u' || str[i] == 'U'){
+            count++;
+          }
+          i++;
+        }
+        return count;
+    }
+    
+    
+    char convertIntoChar(char str[]){
+         int sum = 0;
+        int i = 0;
+        while(str[i]){
+            sum += (int)str[i];
+            i++;
+        }
+        return (char)(sum);
+    }
+    
+    
+    int convertIntoInt(char str1[]){
+        int ans = 0;
+        int i = 0;
+        while(str1[i] != '\0'){
+          ans = ans*10 + (str1[i] - '0');
+          i++;
+        }
+    
+        return ans;
+    }
+    float convertIntoFloat(char str1[]){
+       int integer = 0;
+        int i = 0;
+        while(str1[i] != 46){
+          integer = integer*10 + (str1[i] - '0');
+          i++;
+        }
+        float decimal = 0;
+        i++;
+        while(str1[i]){
+          decimal = decimal*10 + (str1[i] - '0');
+          i++;
+        }
+        while(decimal > 1){
+            decimal /= 10;
+        }
+        float ans = integer + decimal;
+        return ans;
+    }
+    
+    
+    void countWords(){
+         char str1[20],c;
+        int indx = 0;
+       while((c = getchar()) != ';'){
+          str1[indx++] = c;
+       }
+        str1[indx] = '\0';
+        int numChar = 0,numWord = 0,numSpace = 0,numlines = 0,j = 0;
+        int i = 0;
+        while(str1[i]){
+            if(str1[i] != ' ' && str1[i] != 10) {
+                numChar++;
+                j++;
+            }
+            else{
+                if(str1[i] != 10) numSpace++;
+                if(numChar > 0){
+                numWord++;
+                numChar = 0;
+                };
+                
+            };
+            if(str1[i] == 10) numlines++;
+            i++;
+        }
+        printf("Number of characters is : %d \n", j);
+        printf("Number of Words is : %d \n", numWord+1);
+        printf("Number of spaces is : %d \n", numSpace);
+        printf("Number of lines is : %d \n", numlines+1);
+    }
+    
+    void printPossibility(char p[],char up[]){
+      if(strlen(up) <= 0){
+        printf("%s ",p);
+        return;
+      }
+      char ch = up[0];
+      char newU[strlen(up)-1];
+      for(int i = 0;i < (strlen(up)-1);i++){
+        newU[i] = up[i+1];
+      }
+      char newP[strlen(p)+1];
+      for(int i = 0;i < (strlen(p));i++){
+        newP[i] = p[i];
+      }
+      newP[strlen(p)] = ch;
+    }
+    
+    void dictionary(){
+        char *words[10];
+        char *meanings[10];
+    
+    
+        char word[30],meaning[30];
+        int i = 0;
+        char choice;
+        while(choice != '4'){
+          printf("\n****MENU*****\n1.Create\n2.Delete\n3.Search\n4.Exit\n");
+          fflush(stdin);
+          choice = getchar();
+          switch(choice){
+            case '1':
+            printf("Add a word : ");
+            scanf("%s",word);
+            printf("Add meaning of word : ");
+            scanf("%s",meaning);
+            words[i] = word;
+            meanings[i] = meaning;
+            i++;
+            break;
+            case '2':
+            printf("\nEnter a word to be deleted: \n");
+            char word[30];
+            scanf("%s",word);
+            int delIndx = -1;
+            for(int i = 0; i < 10;i++){
+                if(strcmp(words[i],word) == 0) {
+                    delIndx = i;
+                    break;
+                }
+            }
+            if(delIndx == -1) {
+                printf("Word does not exits!");
+                break;
+            }
+            // left shifting elements.
+            for(int i = delIndx;i < 9;i++){
+                words[i] = words[i+1];
+            }
+            for(int i = delIndx;i < 9;i++){
+                meanings[i] = meanings[i+1];
+            }
+            i--;
+            break;
+            case '3':
+            printf("Enter a word to be searched : ");
+            scanf("%s",word);
+            int indx = -1;
+            for(int i = 0; i < 10;i++){
+                printf("%s ",words[i]);
+                if(strcmp(words[i],word) == 0) {
+                    indx = i;
+                    break;
+                }
+            }
+            if(indx != -1) printf("\nMeaning of the %s is : %s\n",word,meanings[indx]);
+            else  printf("Word does not exits!");
+            break;
+          }
+        }
+    }
+    
+    
+    void trimSpace(char str[]){
+    
+        int ch = 0,startSpace = 0,endSpace = 0;
+        for(int i = 0; i < strlen(str);i++){
+            if(str[i] == ' ' && ch == 0){
+                startSpace++;
+            }
+            if(str[i] != ' '){
+                ch++;
+            }
+        }
+        int strCpy[strlen(str)];
+        for(int i = 0; i < strlen(str);i++){
+            if(str[i] == ' ' && i >= startSpace+ch){
+                endSpace++;
+            }
+            strCpy[i] = str[i];
+        }
+        int actualString = strlen(str) - (startSpace+endSpace);
+        int j = 0;
+        for(int i=0;i < strlen(str);i++){
+            if((strCpy[i] != ' ') || (strCpy[i] == ' ' && i > startSpace && i < actualString)){
+                str[j] = strCpy[i];
+                j++;
+            }
+        }
+        str[j] = '\\0\';
+    }
+    
+    void main(){
+        char str[] = "   Faiz Alam   ";
+        printf("Before->%s\\n\",str);
+        trimSpace(str);
+        printf("After->%s ",str);
+    }   
+        
+  `,
+    output: `Before->   Faiz Alam   
+    After->Faiz Alam 
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
     questionName: "convert in lower",
     code: `char toLowerCase(char ch){
       return (char)(ch|' ');
@@ -1692,7 +2316,7 @@ Addtion of 5 with given num : 20
   `,
     type: "stack",
     bookmarked: false,
-    difficulty: "Hard",
+    difficulty: "hard",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
@@ -1840,7 +2464,7 @@ Addtion of 5 with given num : 20
   `,
     type: "stack",
     bookmarked: false,
-    difficulty: "Hard",
+    difficulty: "hard",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
@@ -1966,7 +2590,7 @@ Addtion of 5 with given num : 20
   `,
     type: "stack",
     bookmarked: false,
-    difficulty: "Hard",
+    difficulty: "hard",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
@@ -2004,7 +2628,7 @@ Addtion of 5 with given num : 20
   `,
     type: "stack",
     bookmarked: false,
-    difficulty: "Hard",
+    difficulty: "hard",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
@@ -2315,6 +2939,3571 @@ Addtion of 5 with given num : 20
     type: "stack",
     bookmarked: false,
     difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement simple queue",
+    code: `#include <stdio.h>
+    #define MAX 5
+    int front = -1;
+    int rear = -1;
+    int size = 0;
+    int queue[MAX];
+    
+    void enque(int val){
+        if(size == MAX){
+            printf("Queue is Full!");
+            return;
+        }
+        size++;
+        if(front == -1 && rear == -1){
+            //adding first time
+            front = rear = 0;
+            queue[rear] = val;
+            return;
+        }
+        rear++;
+        queue[rear] = val;
+    }
+    
+    int deque(){
+        if(size == 0) {
+            printf("Queue is Empty!");
+            return __INT16_MAX__;
+        }
+        if(size == 1){
+            int val = queue[front];
+            front = rear = -1;
+            return val;
+        }
+        //shifting items towards left.
+        int val = queue[front];
+        for(int i = front+1; i <= rear;i++){
+            queue[i-1] = queue[i];
+        }
+        rear--;
+        size--;
+        return val;
+    }
+    
+    void display(){
+        if(size == 0) {
+         printf("Queue is Empty!");
+         return ;
+        }
+        for(int i = front; i <= rear;i++){
+            printf("%d ",queue[i]);
+        }
+    }
+    
+    int peek(){
+         if(size == 0) {
+            printf("Queue is Empty!");
+            return __INT16_MAX__;
+        }
+        return queue[front];
+    }
+    
+    void main(){
+         enque(10);
+         enque(20);
+         enque(30);
+         enque(40);
+         enque(50);
+         deque();
+         display();
+    }
+  `,
+    output: `
+    20 30 40 50 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement Dynamic Integer queue",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct Node {
+        int data;
+        struct Node *next;
+    };
+    
+    struct Node *front = NULL,*rear = NULL;
+    
+    void add(int val){
+        if(rear == NULL){
+            rear = (struct Node*)malloc((sizeof(struct Node)));
+            rear->data = val;
+            rear->next = NULL;
+            front = rear;
+            return;
+        }
+        struct Node *temp = (struct Node*)malloc((sizeof(struct Node)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+        temp->data = val;
+        temp->next = NULL;
+        rear->next = temp;
+        rear = temp;
+    }
+    
+    int remove1(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        int val = front->data;
+        struct Node *temp = front;
+        front = front->next;
+        free(temp);
+        return val;
+    }
+    
+    int peek(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        return front->data; 
+    }
+    
+    void main(){
+        add(10);
+        add(20);
+        add(30);
+        printf("%d",remove1());
+    
+    }
+  `,
+    output: `
+    10
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement Circular Integer queue",
+    code: `#include <stdio.h>
+    #define MAX 5
+    
+    int front = -1;
+    int rear = -1;
+    int size = 0;
+    int queue[MAX];
+    
+    void enque(int val){
+        if(front == 0 && rear == MAX-1 || front == rear+1){
+            printf("\nQueue is Full!\n");
+            return;
+        }else if(rear == -1){
+            front = rear = 0;
+        }else rear = (rear+1)%MAX;
+        queue[rear] = val;
+    }
+    
+    int deque(){
+        if(front == -1){
+            printf("\nQueue is Empty!\n");
+            return -1;
+        }
+        int val = queue[front];
+        if(front == rear){
+            front = rear = -1;
+            return val;
+        }
+        front = (front+1)%MAX;
+        return val;
+    }
+    int peek(){
+        if(front == -1){
+            return -1;
+        }
+        return queue[front];
+    }
+    
+    void display(){
+      if(front == rear){
+        if(front != -1){
+            printf("%d",queue[front]);
+        }
+        printf("Queue is Empty");
+        return;
+      }
+      int i = front;
+      while(i != rear){
+        printf("%d ",queue[i]);
+        i = (i+1)%MAX;
+      }
+      printf("%d",queue[rear]);
+    }
+    
+    int isFull(){
+        if(size == MAX){
+            return 1;
+        }
+        return 0;
+    }
+    
+    int isEmpty(){
+        if(size == 0) {
+            return 1;
+        }
+        return 0;
+    }
+    
+    void main(){
+        enque(10);
+        enque(20);
+        enque(30);
+        enque(40);
+        deque();
+        display();
+    }
+  `,
+    output: `
+    20 30 40
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement doubly ended Integer queue",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct Node {
+        int data;
+        struct Node *next;
+    };
+    
+    struct Node *front = NULL,*rear = NULL;
+    
+    void addLast(int val){
+        if(rear == NULL){
+            rear = (struct Node*)malloc((sizeof(struct Node)));
+            rear->data = val;
+            rear->next = NULL;
+            front = rear;
+            return;
+        }
+        struct Node *temp = (struct Node*)malloc((sizeof(struct Node)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+        temp->data = val;
+        temp->next = NULL;
+        rear->next = temp;
+        rear = temp;
+    }
+    void addFirst(int val){
+         if(rear == NULL){
+            rear = (struct Node*)malloc((sizeof(struct Node)));
+            rear->data = val;
+            rear->next = NULL;
+            front = rear;
+            return;
+        }
+        struct Node *temp = (struct Node*)malloc((sizeof(struct Node)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+         temp->data = val;
+         temp->next = front;
+         front = temp;
+    }
+    
+    int removeFirst(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        int val = front->data;
+        struct Node *temp = front;
+        front = front->next;
+        free(temp);
+        return val;
+    }
+    int removeLast(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        int val = rear->data;
+        struct Node *temp = front;
+        while(temp->next !=NULL && temp->next->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = NULL;
+        rear = temp;
+        return val;
+    }
+    
+    int getFirst(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        return front->data; 
+    }
+    int getLast(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        return rear->data; 
+    }
+    void display(){
+        if(front == NULL) return;
+        struct Node *temp = front;
+        while(temp!=NULL){
+            printf("%d ",temp->data);
+            temp = temp->next;
+        }
+    }
+    void main(){
+        addLast(10);
+        addLast(20);
+        addFirst(5);
+        addFirst(2);
+        addLast(30);
+        removeLast();
+        display();
+        // printf("%d",removeFirst());
+    
+    }
+  `,
+    output: `
+    2 5 10 20 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Next greater element",
+    code: `//Next greater element
+    void nextGreater(int arr[],int ans[],int n){
+        int i,j = n-1;
+        for(i = n-1; i >=0;i--){
+            while(isEmptySt() == 0 && peek() <= arr[i]){
+                pop();
+            }
+            if(isEmptySt()) ans[j--] = -1;
+            else {
+                ans[j--] = peek();
+            };
+            push(arr[i]);
+        }
+    }
+    
+    //Queue reversal
+    void main(){
+       int arr[] = {6,8,1,0,1,3};
+       int ans[6];
+       nextGreater(arr,ans,6);
+       for(int i = 0; i< 6;i++){
+        printf("%d ",ans[i]);
+       }
+    }
+  `,
+    output: `
+    8 -1 3 1 3 -1 
+  `,
+    type: "Stack",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Next smaller element",
+    code: `//Next Smaller element
+    void nextSmaller(int arr[],int ans[],int n){
+        int i,j = n-1;
+        for(i = n-1; i >=0;i--){
+            while(isEmptySt() == 0 && peek() >= arr[i]){
+                pop();
+            }
+            if(isEmptySt()) ans[j--] = -1;
+            else {
+                ans[j--] = peek();
+            };
+            push(arr[i]);
+        }
+    }
+    
+    void main(){
+       int arr[] = {6,8,1,0,1,3};
+       int ans[6];
+       nextSmaller(arr,ans,6);
+       for(int i = 0; i< 6;i++){
+        printf("%d ",ans[i]);
+       }
+    }
+  `,
+    output: `
+    1 1 0 -1 -1 -1  
+  `,
+    type: "Stack",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "First non-repeating characther in a stream",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    #define MAX 20
+    int front = -1;
+    int rear = -1;
+    int size = 0;
+    char queue[MAX];
+    
+    void enqueue(char val){
+        if(size == MAX){
+            printf("Queue is Full!");
+            return;
+        }
+        size++;
+        if(front == -1 && rear == -1){
+            //enqueueing first time
+            front = rear = 0;
+            queue[rear] = val;
+            return;
+        }
+        rear++;
+        queue[rear] = val;
+    }
+    
+    char dequeue(){
+        if(size == 0) {
+            printf("Queue is Empty!");
+            return ' ';
+        }
+        if(size == 1){
+            char val = queue[front];
+            front = rear = -1;
+            size = 0;
+            return val;
+        }
+        //shifting items towards left.
+        char val = queue[front];
+        for(int i = front+1; i <= rear;i++){
+            queue[i-1] = queue[i];
+        }
+        rear--;
+        size--;
+        return val;
+    }
+    
+    void display(){
+        if(size == 0) {
+         printf("Queue is Empty!");
+         return ;
+        }
+        for(int i = front; i <= rear;i++){
+            printf("%c ",queue[i]);
+        }
+    }
+    
+    char peek(){
+         if(size == 0) {
+            printf("Queue is Empty!");
+            return ' ';
+        }
+        return queue[front];
+    }
+    int isEmpty(){
+        if(size == 0){
+            return 1;
+        }
+        return 0;
+    }
+    
+    void firstNonRepeating(char str[],int n){
+        int freq[26];
+        for(int i = 0;i < 26;i++){
+            freq[i] = 0;
+        }
+        for(int i = 0;i < n-1;i++){
+          freq[str[i] - 'a']++;
+          enqueue(str[i]);
+          while(isEmpty() == 0 && freq[peek() - 'a'] > 1){
+            dequeue();
+          }
+          if(isEmpty()) printf("-1 ");
+          else printf("%c ",peek());
+        }
+    }
+    
+    void main(){
+        char str[] = "aabbxxc";
+        firstNonRepeating(str,strlen(str));
+    
+    }
+  `,
+    output: `
+    a -1 b -1 x -1 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Reverse first k elements of a queue",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    #define MAX 20
+    int front = -1;
+    int rear = -1;
+    int size = 0;
+    char queue[MAX];
+    
+    void enqueue(char val){
+        if(size == MAX){
+            printf("Queue is Full!");
+            return;
+        }
+        size++;
+        if(front == -1 && rear == -1){
+            //enqueueing first time
+            front = rear = 0;
+            queue[rear] = val;
+            return;
+        }
+        rear++;
+        queue[rear] = val;
+    }
+    
+    char dequeue(){
+        if(size == 0) {
+            printf("Queue is Empty!");
+            return ' ';
+        }
+        if(size == 1){
+            char val = queue[front];
+            front = rear = -1;
+            size = 0;
+            return val;
+        }
+        //shifting items towards left.
+        char val = queue[front];
+        for(int i = front+1; i <= rear;i++){
+            queue[i-1] = queue[i];
+        }
+        rear--;
+        size--;
+        return val;
+    }
+    
+    void display(){
+        if(size == 0) {
+         printf("Queue is Empty!");
+         return ;
+        }
+        for(int i = front; i <= rear;i++){
+            printf("%c ",queue[i]);
+        }
+    }
+    
+    char peek(){
+         if(size == 0) {
+            printf("Queue is Empty!");
+            return ' ';
+        }
+        return queue[front];
+    }
+    int isEmpty(){
+        if(size == 0){
+            return 1;
+        }
+        return 0;
+    }
+    
+    void reverseFirstK(int k,int size){
+      int i = 0;
+      int arr[k];
+      while(i < k){
+          arr[i] = remove1();
+          i++;
+      }
+      for(int j = k-1;j >=0;j--){
+          add(arr[j]);
+      }
+      for(int j=1;j <= size-k;j++){
+          add(remove1());
+      }
+  }
+    
+    void main(){
+       add(1);
+       add(2);
+       add(3);
+       add(4);
+       add(5);
+       displayQ();
+       reverseFirstK(3);
+       printf("\\n\");
+       displayQ();
+    }
+  `,
+    output: `
+    1 2 3 4 5 
+    3 2 1 4 5 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Reverse the queue",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    #define MAX 20
+    int front = -1;
+    int rear = -1;
+    int size = 0;
+    char queue[MAX];
+    
+    void enqueue(char val){
+        if(size == MAX){
+            printf("Queue is Full!");
+            return;
+        }
+        size++;
+        if(front == -1 && rear == -1){
+            //enqueueing first time
+            front = rear = 0;
+            queue[rear] = val;
+            return;
+        }
+        rear++;
+        queue[rear] = val;
+    }
+    
+    char dequeue(){
+        if(size == 0) {
+            printf("Queue is Empty!");
+            return ' ';
+        }
+        if(size == 1){
+            char val = queue[front];
+            front = rear = -1;
+            size = 0;
+            return val;
+        }
+        //shifting items towards left.
+        char val = queue[front];
+        for(int i = front+1; i <= rear;i++){
+            queue[i-1] = queue[i];
+        }
+        rear--;
+        size--;
+        return val;
+    }
+    
+    void display(){
+        if(size == 0) {
+         printf("Queue is Empty!");
+         return ;
+        }
+        for(int i = front; i <= rear;i++){
+            printf("%c ",queue[i]);
+        }
+    }
+    
+    char peek(){
+         if(size == 0) {
+            printf("Queue is Empty!");
+            return ' ';
+        }
+        return queue[front];
+    }
+    int isEmpty(){
+        if(size == 0){
+            return 1;
+        }
+        return 0;
+    }
+    
+    // Reverse first K elements of a queue
+    void reverseQueue(int size){
+        int i = 0;
+        int arr[size];
+        while(i < size){
+            arr[i] = deque();
+            i++;
+        }
+        for(int j = size-1;j >=0;j--){
+            enque(arr[j]);
+        }
+    }
+    
+    void main(){
+       enque(1);
+       enque(2);
+       enque(3);
+       enque(4);
+       enque(5);
+    
+       display();
+       reverseQueue(size);
+       printf("\n");
+       display();
+    }
+  `,
+    output: `
+    1 2 3 4 5 
+    5 4 3 2 1 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Find a tour that visits all the stations",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    // Gas Station
+    int tour(int petrol[],int distance[],int n){
+        int start = 0;
+        int balance = 0;
+        int deficy = 0;
+    
+        for(int i=0;i < n;i++){
+            balance += petrol[i] - distance[i];
+            if(balance < 0){
+                deficy += balance;
+                start = i+1;
+                balance = 0;
+            }
+        }
+        if(deficy+balance >= 0) return start;
+        return -1;
+    }
+    void main(){
+        int petrol[] = {4,6,7,4};
+        int distance[] = {6,5,3,5};
+        printf("%d ",tour(petrol,distance,4));
+    }
+  `,
+    output: `1
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Longest Valid substring",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    int longestValidString(char str[]){
+      int count = 0;
+      int max = 0;
+      for(int i = 0;i < strlen(str);i++){
+          char ch = str[i];
+          if(ch == '('){
+              push(ch);
+          }else {
+              if((isEmpty() == 0) && (peek() == '(')){
+                  pop();
+                  count += 2;
+              }else {
+                  max = getMax(max,count);
+                  count = 0;
+              }
+          }
+      }
+      max = getMax(max,count);
+      return max;
+  }  
+  `,
+    output: `6
+  `,
+    type: "Stack",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Linear Search using iteration",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    int linearSearch(int arr[],int n,int key){
+      for(int i = 0;i < n;i++){
+          if(arr[i] == key) return i;
+      }
+      return -1;
+  }
+  }  
+  void main(){
+    int arr[] = {4,5,2,1,3};
+    printf("%d ",linearSearch(arr,5,5));
+}
+  `,
+    output: `1
+  `,
+    type: "searching",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Linear Search using recursion",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    int linearSearchRec(int arr[],int n,int key,int i){
+      if(i == n){
+          return -1;
+      }
+      if(arr[i] == key) return i;
+  
+      return linearSearchRec(arr,n,key,i + 1);
+  }
+  
+  void main(){
+      int arr[] = {4,5,2,1,3};
+      printf("%d ",linearSearchRec(arr,5,3,0));
+  }
+  `,
+    output: `4 
+  `,
+    type: "searching",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Binary Search using iteration",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    int binarySearch(int arr[],int n,int key){
+      int s = 0;
+      int e = n-1;
+      while(s < e){
+          int mid = (s+e)/2;
+          if(arr[mid] == key) return mid;
+          else if(arr[mid] > key){
+              e = mid - 1;
+          }else s = mid + 1;
+      }
+      return -1;
+  }
+  `,
+    output: `4 
+  `,
+    type: "searching",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Binary Search using recursion",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    int binarySearchRec(int arr[],int key,int s,int e){
+      if(s > e) return -1;
+      int mid = (s+e)/2;
+      if(arr[mid] == key) return mid;
+      if(arr[mid] > key){
+          return binarySearchRec(arr,key,s,mid - 1);
+      }else {
+          return binarySearchRec(arr,key,mid + 1,e);
+      }
+  }
+  `,
+    output: `4 
+  `,
+    type: "searching",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Bubble sort using iteration",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    void bubbleSort(int arr[],int n){
+      for(int i = 0;i<n-1;i++){
+          for(int j = 0;j<n-1-i;j++){
+              if(arr[j] > arr[j+1]){
+                  int temp = arr[j];
+                  arr[j] = arr[j+1];
+                  arr[j+1] = temp;
+              }
+          }
+      }
+  }
+  int arr[] = {4,5,2,1,3};
+    bubbleSort(arr,5);
+    printArray(arr,5);
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Selection sort using iteration",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    void selectionSort(int arr[],int n){
+      for(int i = 0;i < n-1;i++){
+          int min = i;
+          for(int j = i;j < n;j++){
+              if(arr[j] < arr[min]) min = j;
+          }
+          int temp = arr[i];
+          arr[i] = arr[min];
+          arr[min] = temp;
+      }
+  }
+  void main(){
+    int arr[] = {4,5,2,1,3};
+    selectionSort(arr,5);
+    printArray(arr,5);
+}
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Inserting sort using iteration",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    vvoid insertionSort(int arr[],int n){
+      for(int i = 0; i < n;i++){
+          int cur = arr[i];
+          int prev = i-1;
+          while(prev >=0 && arr[prev] > cur){
+              arr[prev + 1] = arr[prev];
+              prev--;
+          }
+          arr[prev+1] = cur;
+      }
+  }
+  int arr[] = {4,5,2,1,3};
+    insertionSort(arr,5);
+    printArray(arr,5);
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Merge sort using recursion",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    //8. Merge Sort
+void merge(int arr[],int s,int m,int e){
+    int temp[e-s+1];
+    int  i = s,j = m+1,k = 0;
+
+    while(i <= m && j <= e){
+        if(arr[i] < arr[j]){
+            temp[k] = arr[i];
+            i++;
+        }else {
+            temp[k] = arr[j];
+            j++;
+        }
+        k++;
+    }
+    while(i <= m){
+            temp[k] = arr[i];
+            i++;
+            k++;
+    }
+     while(j <= e){
+        temp[k] = arr[j];
+        j++;
+        k++;
+    }
+    for(int i = 0; i < (e-s+1);i++){
+        arr[s+i] = temp[i];
+    }
+}
+void mergeSort(int arr[],int s,int e){
+    if(s >= e) return;
+    int mid = (s+e)/2;
+    mergeSort(arr,s,mid);
+    mergeSort(arr,mid+1,e);
+    merge(arr,s,mid,e);
+}
+
+// Print array
+void printArray(int arr[],int n){
+    for(int i = 0;i < n;i++){
+        printf("%d ",arr[i]);
+    }
+}
+
+void main(){
+    int arr[] = {4,5,2,1,3};
+    mergeSort(arr,0,4);
+    printArray(arr,5);
+}
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Quick sort using recursion",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    int partition(int arr[],int s,int e){
+      int pivot = arr[e];
+      // used to make space for element less than pivot element
+      int i = s - 1;
+      for(int j = s;j <= e;j++){
+          if(arr[j] < pivot){
+              i++;
+              int temp = arr[i];
+              arr[i] = arr[j];
+              arr[j] = temp;
+          }
+      }
+  
+      i++;
+      int temp = pivot;
+      arr[e] = arr[i];
+      arr[i] = temp;
+      return i;
+  }
+  
+  void quickSort(int arr[],int s,int e){
+      if(s >= e) return;
+      int pivot = partition(arr,s,e);
+  
+      // sort for left part
+      quickSort(arr,s,pivot - 1);
+      quickSort(arr,pivot+1,e);
+  }
+  
+  void main(){
+      int arr[] = {4,5,2,1,3};
+      quickSort(arr,0,4);
+      printArray(arr,5);
+  }
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Quick sort for string using recursion",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    void printString(char arr[],int n){
+      for(int i = 0;i < n;i++){
+          printf("%c ",arr[i]);
+      }
+  }
+  void merge(char arr[],int s,int m,int e){
+    char temp[e-s+1];
+    int  i = s,j = m+1,k = 0;
+
+    while(i <= m && j <= e){
+        if(arr[i] < arr[j]){
+            temp[k] = arr[i];
+            i++;
+        }else {
+            temp[k] = arr[j];
+            j++;
+        }
+        k++;
+    }
+    while(i <= m){
+            temp[k] = arr[i];
+            i++;
+            k++;
+    }
+     while(j <= e){
+        temp[k] = arr[j];
+        j++;
+        k++;
+    }
+    for(int i = 0; i < (e-s+1);i++){
+        arr[s+i] = temp[i];
+    }
+}
+void mergeSort(char arr[],int s,int e){
+    if(s >= e) return;
+    int mid = (s+e)/2;
+    mergeSort(arr,s,mid);
+    mergeSort(arr,mid+1,e);
+    merge(arr,s,mid,e);
+}
+  
+  void main(){
+      char arr[] = "zaif";
+      // printf("%d ",binarySearchRec(arr,3,0,4));
+      mergeSort(arr,0,4);
+      printString(arr,5);
+  }
+  `,
+    output: ` a f i z 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Sum of matrix",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+// sum of two matrix
+void sumOfMatrix(int a[][3],int b[][3],int ans[][3],int rows,int cols){
+    for(int i = 0;i < rows;i++){
+        for(int j = 0;j < cols;j++){
+            ans[i][j] = a[i][j] + b[i][j];
+        }
+    }
+}
+
+void printMatrix(int mat[][3],int rows,int cols){
+      for(int i = 0;i < rows;i++){
+        for(int j = 0;j < cols;j++){
+            printf(" %d ",mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void main(){
+
+    int a[][3] = {
+        {1,2,3},
+        {4,5,6},
+        {7,8,9,}
+    };
+    int b[][3] = {
+        {1,2,3},
+        {4,5,6},
+        {7,8,9,}
+    };
+    int ans[3][3];
+    sumOfMatrix(a,b,ans,3,3);
+    printMatrix(ans,3,3);
+}
+  `,
+    output: `
+    2  4  6    
+    8  10  12  
+    14  16  18 
+  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Multiply of matrix",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    void printMatrix(int mat[][3],int rows,int cols){
+      for(int i = 0;i < rows;i++){
+        for(int j = 0;j < cols;j++){
+            printf(" %d ",mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+// multiply of two matrix
+void multiplyMatrix(int a[][3],int b[][3],int ans[][3],int rows,int cols){
+    if(rows != cols) return;
+      for(int i = 0;i < rows;i++){
+        for(int j = 0;j < cols;j++){
+            for(int k = 0; k < rows;k++){
+                ans[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+}
+
+void main(){
+
+    int a[][3] = {
+        {1,2,3},
+        {4,5,6},
+        {7,8,9,}
+    };
+    int b[][3] = {
+        {1,2,3},
+        {4,5,6},
+        {7,8,9,}
+    };
+    int ans[3][3];
+    for(int i = 0;i < 3;i++){
+        for(int j = 0;j < 3;j++){
+           ans[i][j] = 0;
+        }
+    }
+    multiplyMatrix(a,b,ans,3,3);
+    printMatrix(ans,3,3);
+}
+  `,
+    output: `
+    30  36  42    
+    66  81  96    
+    102  126  150 
+  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "subtraction of matrix",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    void subOfMatrix(int a[][3],int b[][3],int ans[][3],int rows,int cols){
+      for(int i = 0;i < rows;i++){
+          for(int j = 0;j < cols;j++){
+              ans[i][j] = a[i][j] - b[i][j];
+          }
+      }
+  }
+  
+  
+  void main(){
+  
+      int a[][3] = {
+          {1,2,3},
+          {4,5,6},
+          {7,8,9,}
+      };
+      int b[][3] = {
+          {1,2,3},
+          {4,5,6},
+          {7,8,9,}
+      };
+      int ans[3][3];
+      for(int i = 0;i < 3;i++){
+          for(int j = 0;j < 3;j++){
+             ans[i][j] = 0;
+          }
+      }
+      subOfMatrix(a,b,ans,3,3);
+      printMatrix(ans,3,3);
+  }
+  `,
+    output: `
+    0  0  0 
+    0  0  0 
+    0  0  0 
+  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Tic Tac Toe game",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+    char checkWinner(char board[][3]){
+        // checking for all possibilties to win a game.
+        // check for first row.
+        if(board[0][0] == board[0][1] && board[0][1] == board[0][2]){
+            return board[0][0];
+        }
+        // check for 2nd row.
+        if(board[1][0] == board[1][1] && board[1][1] == board[1][2]){
+            return board[1][0];
+        }
+        // check for 3rd row.
+        if(board[2][0] == board[2][1] && board[2][1] == board[2][2]){
+            return board[2][0];
+        }
+        // check for 1st col
+        if(board[0][0] == board[1][0] && board[1][0] == board[2][0]){
+            return board[0][0];
+        }
+        // check for 2nd col
+        if(board[0][1] == board[1][1] && board[1][1] == board[2][1]){
+            return board[0][1];
+        }
+        // check for 3rd col
+        if(board[0][2] == board[1][2] && board[1][2] == board[2][2]){
+            return board[0][2];
+        }
+        // check for diagonal left to right
+        if(board[0][0] == board[1][1] && board[1][1] == board[2][2]){
+            return board[0][0];
+        }
+        // check for diagonal right to left
+        if(board[0][1] == board[1][1] && board[1][1] == board[2][0]){
+            return board[0][1];
+        }
+        return '#';
+    }
+    
+    void printBoard(char board[][3]){
+          for(int i = 0;i < 3;i++){
+            for(int j = 0;j < 3;j++){
+                printf("%c | ",board[i][j]);
+            }
+            printf("\n------------\n");
+        }
+    }
+    
+    void main(){
+        char board[3][3] = {
+            {'1','2','3'},
+            {'4','5','6'},
+            {'7','8','9'},
+        };
+        int move = 0;
+        char curPlayer;
+        char choice;
+        int r = -1,c = -1;
+      
+        while(1){
+          curPlayer = move%2 == 0 ? 'X' : '0';
+          printf("\n");
+          printBoard(board);
+          printf("\nCurrent player is -> %c \n",curPlayer);
+          printf("Enter your position : ");
+          choice = getchar();
+          if(choice >= '1' && choice <= '9'){
+            move++;
+            switch(choice){
+                case '1':
+                r = 0;
+                c = 0;
+                break;
+                case '2':
+                r = 0;
+                c = 1;
+                break;
+                case '3':
+                r = 0;
+                c = 2;
+                break;
+                case '4':
+                r = 1;
+                c = 0;
+                break;
+                case '5':
+                r = 1;
+                c = 1;
+                break;
+                case '6':
+                r = 1;
+                c = 2;
+                break;
+                case '7':
+                r = 2;
+                c = 0;
+                break;
+                case '8':
+                r = 2;
+                c = 1;
+                break;            
+                default: 
+                r = 2;
+                c = 2;
+            }
+            if(board[r][c] == 'X' || board [r][c] == '0'){
+                move--;
+                printf("position already marked! Try another");
+                continue;
+            }else {
+                board[r][c] = curPlayer;
+                fflush(stdin);
+                if(checkWinner(board) == 'X') {
+                    printf("Horray! Player X has won.");
+                    break;
+                }else if(checkWinner(board) == '0'){
+                    printf("Horray! Player 0 has won.");
+                    break;
+                }else continue;
+            }
+          }else {
+            printf("\nInvalid position!\n");
+          }
+        }
+    }
+  `,
+    output: `
+    1 | 2 | 3 |
+    ------------
+    4 | 5 | 6 |
+    ------------
+    7 | 8 | 9 |
+    ------------
+    
+    Current player is -> X 
+    Enter your position : 9
+    
+    1 | 2 | 3 |
+    ------------
+    4 | 5 | 6 |
+    ------------
+    7 | 8 | X |
+    ------------
+    
+    Current player is -> 0 
+    Enter your position : 8
+    
+    1 | 2 | 3 |
+    ------------
+    4 | 5 | 6 |
+    ------------
+    7 | 0 | X |
+    ------------
+    
+    Current player is -> X 
+    Enter your position : 5
+    
+    1 | 2 | 3 | 
+    ------------
+    4 | X | 6 | 
+    ------------
+    7 | 0 | X | 
+    ------------
+    
+    Current player is -> 0
+    Enter your position : 4
+    
+    1 | 2 | 3 |
+    ------------
+    0 | X | 6 |
+    ------------
+    7 | 0 | X |
+    ------------
+    
+    Current player is -> X
+    Enter your position : 1
+    Horray! Player X has won.
+  `,
+    type: "array",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Insert a node at beggining in a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+    void insertFirst(int val){
+      if(head == NULL){
+          head = (struct Node*)malloc(sizeof(struct Node));
+          head->data = val;
+          tail = head;
+          tail->next = NULL;
+          size++;
+          return;
+      }
+      struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+      newNode->data = val;
+      newNode->next = head;
+      head = newNode;
+      size++;
+  }
+  void main(){
+    insertFirst(10);
+    insertLast(5);
+    insertLast(4);
+    insertLast(3);
+    insertLast(2);
+    insertLast(1);
+    // sortList();
+    // insertInMiddle(25,3);
+    // deleteInMiddle(3);
+    display();
+  `,
+    output: `
+    10->5->4->3->2->1->
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "IMPLEMENT THE POLYNOMIAL MANIPULATION ADDING OPERATION",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <math.h>
+    
+    struct Node{
+        int coffe;
+        int pow;
+        struct Node *next;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(int val,int pow){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            head->coffe = val;
+            head->pow = pow;
+            tail = head;
+            tail->next = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(int val,int pow){
+        if(head == NULL){
+           insertFirst(val,pow);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(int val,int pow,int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(val,pow);
+            return;
+        }
+         if(pos == size){
+           insertLast(val,pow);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = prev->next;
+        prev->next = newNode;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    int deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        int coffe = head->coffe;
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return coffe;
+        }
+        head = head->next;
+        size--;
+        return coffe;
+    }
+    
+    int deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        if(size == 1){
+            return deleteFirst();
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        int coffe = tail->coffe;
+        prev->next = NULL;
+        tail = prev;
+        size--;
+        return coffe;
+    }
+    
+    int deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return -1;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            return deleteLast();
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return -1;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            int coffe = temp->next->coffe;
+            temp->next = temp->next->next;
+            return coffe;
+        }
+        return -1;
+    }
+
+    int getSum(int x){
+        int sum = 0;
+        struct Node *temp = head;
+        while(temp != NULL){
+            sum += temp->coffe * pow(x,temp->pow);
+            temp = temp->next;
+        }
+        return sum;
+    }
+    
+    void main(){
+        insertLast(2,2);
+        insertLast(3,1);
+        insertLast(5,0);
+
+        printf("Sum of polynomial is : %d",getSum(2));
+    }
+  `,
+    output: `
+    Sum of polynomial is : 19
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "IMPLEMENT THE POLYNOMIAL MANIPULATION SUBTRACTION OPERATION",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <math.h>
+    
+    struct Node{
+        int coffe;
+        int pow;
+        struct Node *next;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(int val,int pow){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            head->coffe = val;
+            head->pow = pow;
+            tail = head;
+            tail->next = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(int val,int pow){
+        if(head == NULL){
+           insertFirst(val,pow);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(int val,int pow,int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(val,pow);
+            return;
+        }
+         if(pos == size){
+           insertLast(val,pow);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = prev->next;
+        prev->next = newNode;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    int deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        int coffe = head->coffe;
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return coffe;
+        }
+        head = head->next;
+        size--;
+        return coffe;
+    }
+    
+    int deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        if(size == 1){
+            return deleteFirst();
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        int coffe = tail->coffe;
+        prev->next = NULL;
+        tail = prev;
+        size--;
+        return coffe;
+    }
+    
+    int deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return -1;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            return deleteLast();
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return -1;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            int coffe = temp->next->coffe;
+            temp->next = temp->next->next;
+            return coffe;
+        }
+        return -1;
+    }
+    
+    void display(char var){
+        struct Node *temp = head;
+        while(temp != NULL){
+            printf("(%d%c^%d) + ",temp->coffe,var,temp->pow);
+            temp = temp->next;
+        }
+        printf("0");
+    }
+    
+    
+
+    
+    int calcEqn(int x){
+        int sum = 0;
+        struct Node *temp = head;
+        sum += temp->coffe * pow(x,temp->pow);
+        temp = temp->next;
+        while(temp != NULL){
+            sum -= temp->coffe * pow(x,temp->pow);
+            temp = temp->next;
+        }
+        return sum;
+    }
+    
+    void main(){
+        insertLast(2,2);
+        insertLast(3,1);
+        insertLast(-5,0);
+        display('x');
+        printf("\nAns of polynomial is : %d",calcEqn(2));
+    }
+  `,
+    output: `
+    (2x^2) + (3x^1) + (-5x^0) + 0
+     Ans of polynomial is : 7
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "IMPLEMENT THE POLYNOMIAL MANIPULATION MULTIPLICATION  OPERATION",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <math.h>
+    
+    struct Node{
+        int coffe;
+        int pow;
+        struct Node *next;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(int val,int pow){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            head->coffe = val;
+            head->pow = pow;
+            tail = head;
+            tail->next = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(int val,int pow){
+        if(head == NULL){
+           insertFirst(val,pow);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(int val,int pow,int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(val,pow);
+            return;
+        }
+         if(pos == size){
+           insertLast(val,pow);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        newNode->coffe = val;
+        newNode->pow = pow;
+        newNode->next = prev->next;
+        prev->next = newNode;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    int deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        int coffe = head->coffe;
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return coffe;
+        }
+        head = head->next;
+        size--;
+        return coffe;
+    }
+    
+    int deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        if(size == 1){
+            return deleteFirst();
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        int coffe = tail->coffe;
+        prev->next = NULL;
+        tail = prev;
+        size--;
+        return coffe;
+    }
+    
+    int deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return -1;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            return deleteLast();
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return -1;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            int coffe = temp->next->coffe;
+            temp->next = temp->next->next;
+            return coffe;
+        }
+        return -1;
+    }
+    
+    void display(char var){
+        struct Node *temp = head;
+        while(temp != NULL){
+            printf("(%d%c^%d) + ",temp->coffe,var,temp->pow);
+            temp = temp->next;
+        }
+        printf("0");
+    }
+    
+    
+
+    
+    int calcEqn(int x){
+        int sum = 0;
+        struct Node *temp = head;
+        sum += temp->coffe * pow(x,temp->pow);
+        temp = temp->next;
+        while(temp != NULL){
+            sum *= temp->coffe * pow(x,temp->pow);
+            temp = temp->next;
+        }
+        return sum;
+    }
+    
+    void main(){
+        insertLast(2,2);
+        insertLast(3,1);
+        insertLast(-5,0);
+        printf("\nAns of polynomial is : %d",calcEqn(2));
+    }
+  `,
+    output: `
+    Ans of polynomial is : -240  
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Insert a node at last in a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+    void insertLast(int val){
+      if(head == NULL){
+         insertFirst(val);
+          return;
+      }
+      struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+      newNode->data = val;
+      newNode->next = NULL;
+      tail->next = newNode;
+      tail = newNode;
+      size++;
+  }
+  void main(){
+    insertFirst(10);
+    insertLast(5);
+    insertLast(4);
+    insertLast(3);
+    insertLast(2);
+    insertLast(1);
+    // sortList();
+    // insertInMiddle(25,3);
+    // deleteInMiddle(3);
+    display();
+  `,
+    output: `
+    10->5->4->3->2->1->
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Insert a node in between in a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+    void insertInMiddle(int val,int pos){
+      if(pos == 0) {
+          printf("Invalid pos");
+          return;
+      }
+      if(pos == 1){
+          insertFirst(val);
+          return;
+      }
+       if(pos == size){
+         insertLast(val);
+         return;
+      }
+  
+      if(pos > size+1){
+          printf("Invalid pos");
+          return;
+      }
+      struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+      if(newNode !=  NULL){
+        struct Node *prev = head;
+          for(int i = 1; i < pos-1;i++){
+          prev = prev->next;
+      }
+      newNode->data = val;
+      newNode->next = prev->next;
+      prev->next = newNode;
+      size++;
+      }else {
+          printf("LinkedList is Full!");
+      }
+     
+  }
+  void main(){
+    insertFirst(10);
+    insertLast(5);
+    insertLast(4);
+    insertLast(3);
+    insertLast(2);
+    insertLast(1);
+    // sortList();
+    // insertInMiddle(25,3);
+    // deleteInMiddle(3);
+    display();
+  `,
+    output: `
+    10->5->25->4->3->2->1->
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Delete a node at begginng in a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+    int deleteFirst(){
+      if(size == 0){
+          printf("List is Empty!");
+          return -1;
+      }
+      int data = head->data;
+      if(size == 1){
+          head = tail = NULL;
+          size--;
+          return data;
+      }
+      head = head->next;
+      size--;
+      return data;
+  }
+  void main(){
+    insertFirst(10);
+    insertFirst(20);
+    insertFirst(30);
+    // insertLast(5);
+    // insertLast(4);
+    // insertLast(3);
+    // insertLast(2);
+    // insertLast(1);
+    deleteFirst();
+    // sortList();
+    // insertInMiddle(25,3);
+    // deleteInMiddle(3);
+    display();
+}
+  `,
+    output: `
+    20->10->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Delete a node at last in a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+    int deleteLast(){
+      if(size == 0){
+         printf("List is Empty!");
+         return -1;
+     }
+     if(size == 1){
+         return deleteFirst();
+     }
+     struct Node *prev = head;
+     while(prev->next != tail){
+         prev = prev->next;
+     }
+     int data = tail->data;
+     prev->next = NULL;
+     tail = prev;
+     size--;
+     return data;
+ }
+ void main(){
+  insertFirst(10);
+  insertFirst(20);
+  insertFirst(30);
+  // insertLast(5);
+  // insertLast(4);
+  // insertLast(3);
+  // insertLast(2);
+  // insertLast(1);
+  // deleteFirst();
+  deleteLast();
+  // sortList();
+  // insertInMiddle(25,3);
+  // deleteInMiddle(3);
+  display();
+}
+  `,
+    output: `
+    30->20->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Delete a node in between in a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+  }
+
+
+  int deleteInMiddle(int pos){
+      if(pos == 0) {
+          printf("Invalid pos!");
+          return -1;
+      }
+      if(pos == 1) {
+          return deleteFirst();
+      }
+      if(pos == size){
+          return deleteLast();
+      }
+      if(pos > size){
+          printf("Invalid pos!");
+          return -1;
+      }
+      struct Node *temp = head;
+  
+      for(int i = 1; i < pos - 1;i++){
+          temp = temp->next;
+      }
+      if(temp != NULL && temp->next != NULL){
+          int data = temp->data;
+          temp->next = temp->next->next;
+          return data;
+      }
+      return -1;
+  }
+  
+  void main(){
+    insertFirst(10);
+    insertFirst(20);
+    insertFirst(30);
+    insertFirst(40);
+
+    // deleteLast();
+    // sortList();
+    // insertInMiddle(25,3);
+    deleteInMiddle(3);
+    display();
+}
+  `,
+    output: `
+    40->30->10->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Search a node in a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+  }
+
+
+  int search(int key){
+    if(size == 0){
+        printf("List is Empty!");
+        return -1; 
+    }
+    int indx = 0;
+    struct Node *temp = head;
+    while(temp != NULL){
+        if(temp->data == key){
+            return indx;
+        }
+        temp = temp->next;
+        indx++;
+    }
+    return -1;
+}
+
+  
+void main(){
+  insertFirst(10);
+  insertFirst(20);
+  insertFirst(30);
+  insertFirst(40);
+  printf("Found at indx %d \\n\",search(20));
+  // deleteLast();
+  // sortList();
+  // insertInMiddle(25,3);
+  display();
+}
+  `,
+    output: `
+    Found at indx 2 
+    40->30->20->10->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement Integer doubly Linkedlist with all operations",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct Node{
+        int data;
+        struct Node *next;
+        struct Node *prev;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(int val){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            head->data = val;
+            tail = head;
+            tail->next = NULL;
+            head->prev = NULL;
+            tail->prev = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = val;
+        newNode->next = head;
+        newNode->prev = NULL;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(int val){
+        if(head == NULL){
+           insertFirst(val);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = val;
+        newNode->next = NULL;
+        newNode->prev = tail;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(int val,int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(val);
+            return;
+        }
+         if(pos == size){
+           insertLast(val);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        newNode->data = val;
+        newNode->next = prev->next;
+        prev->next->prev = newNode;
+        prev->next = newNode;
+        newNode->prev = prev;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    int deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        int data = head->data;
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return data;
+        }
+        head = head->next;
+        head->prev = NULL;
+        size--;
+        return data;
+    }
+    int deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        if(size == 1){
+            return deleteFirst();
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        int data = tail->data;
+        prev->next = NULL;
+        tail = prev;
+        size--;
+        return data;
+    }
+    
+    int search(int key){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1; 
+        }
+        int indx = 0;
+        struct Node *temp = head;
+        while(temp != NULL){
+            if(temp->data == key){
+                return indx;
+            }
+            temp = temp->next;
+            indx++;
+        }
+        return -1;
+    }
+    
+    
+    void sortList(){
+        if(size == 0 || size == 1) return;
+        for(int i = 0; i < size-1;i++){
+            struct Node *cur = head;
+            for(int j = 0;j < size - 1 - i;j++){
+                if(cur->next != NULL){
+                    if(cur->data > cur->next->data){
+                        int t = cur->data;
+                        cur->data = cur->next->data;
+                        cur->next->data = t;
+                    }
+                }
+                cur = cur->next;
+            }
+        }
+    }
+    
+    int deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return -1;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            return deleteLast();
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return -1;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            int data = temp->data;
+            temp->next = temp->next->next;
+            temp->next->next->prev = temp;
+            return data;
+        }
+        return -1;
+    }
+    
+    void display(){
+        struct Node *temp = head;
+        while(temp != NULL){
+            printf("%d<->",temp->data);
+            temp = temp->next;
+        }
+        printf("null");
+    }
+    
+    void main(){
+        insertFirst(10);
+        insertFirst(20);
+        insertFirst(30);
+        insertFirst(40);
+        insertInMiddle(25,3);
+        deleteInMiddle(3);
+        display();
+    }
+  `,
+    output: `
+    40<->30<->20<->10<->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Sort a linkedlist",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+  }
+
+
+  void sortList(){
+    if(size == 0 || size == 1) return;
+    for(int i = 0; i < size-1;i++){
+        struct Node *cur = head;
+        for(int j = 0;j < size - 1 - i;j++){
+            if(cur->next != NULL){
+                if(cur->data > cur->next->data){
+                    int t = cur->data;
+                    cur->data = cur->next->data;
+                    cur->next->data = t;
+                }
+            }
+            cur = cur->next;
+        }
+    }
+}
+  
+
+void main(){
+  insertFirst(10);
+  insertFirst(20);
+  insertFirst(30);
+  insertFirst(40);
+  insertInMiddle(25,3);
+  sortList();
+  display();
+}
+  `,
+    output: `
+    10->20->25->30->40->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Soring  a String linkedlist ",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+   
+  }
+
+
+  void sortList(){
+    if(size == 0 || size == 1) return;
+    for(int i = 0; i < size-1;i++){
+        struct Node *cur = head;
+        for(int j = 0;j < size - 1 - i;j++){
+            if(strcmp(cur->data , cur->next->data) > 0){
+                    char temp[100];
+                    strcpy(temp,cur->data);
+                    strcpy(cur->data,cur->next->data);
+                    strcpy(cur->next->data,temp);
+                }
+            cur = cur->next;
+        }
+    }
+}
+  
+
+void main(){
+  insertFirst("you");
+  insertFirst("are");
+  insertFirst("how");
+  insertLast("Faiz");
+  insertInMiddle("?",4);
+  display();
+  printf("\n");
+ sortList();
+  display();
+
+}
+  `,
+    output: `
+    how->are->you->Faiz->?->null
+    ?->Faiz->are->how->you->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement a doubly circular linkedlist with all operations",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    
+    struct Node{
+        char data[100];
+        struct Node *next;
+        struct Node *prev;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(char str[]){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            strcpy(head->data,str);
+            tail = head;
+            tail->next = NULL;
+            head->prev = tail;
+            tail->prev = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        printf("%s\n",str);
+        strcpy(newNode->data,str);
+        newNode->next = head;
+        newNode->prev = tail;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(char str[]){
+        if(head == NULL){
+           insertFirst(str);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        strcpy(newNode->data,str);
+        newNode->next = head;
+        newNode->prev = tail;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(char str[],int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(str);
+            return;
+        }
+         if(pos == size){
+           insertLast(str);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        strcpy(newNode->data,str);
+        newNode->next = prev->next;
+        prev->next->prev = newNode;
+        prev->next = newNode;
+        newNode->prev = prev;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    void deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return;
+        }
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return;
+        }
+        head = head->next;
+        head->prev = tail;
+        size--;
+    }
+    void deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return;
+        }
+        if(size == 1){
+            deleteFirst();
+            return;
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        prev->next = head;
+        tail = prev;
+        size--;
+    }
+    
+    int search(char str[]){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1; 
+        }
+        int indx = 0;
+        struct Node *temp = head;
+        while(temp != NULL){
+            if(strcmp(temp->data,str) == 0){
+                return indx;
+            }
+            temp = temp->next;
+            indx++;
+        }
+        return -1;
+    }
+    
+    
+    void sortList(){
+        if(size == 0 || size == 1) return;
+        for(int i = 0; i < size-1;i++){
+            struct Node *cur = head;
+            for(int j = 0;j < size - 1 - i;j++){
+                if(cur->next != NULL){
+                    if(strcmp(cur->data , cur->next->data) > 0){
+                        char temp[100];
+                        strcpy(temp,cur->data);
+                        strcpy(cur->data,cur->next->data);
+                        strcpy( cur->next->data,temp);
+                    }
+                }
+                cur = cur->next;
+            }
+        }
+    }
+    
+    void deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            deleteLast();
+            return ;
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return ;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        
+        if(temp != NULL && temp->next != NULL){
+            temp->next = temp->next->next;
+            temp->next->next->prev = temp;
+        }
+    }
+    
+    void display(){
+        struct Node *temp = head;
+        while(temp->next != head){
+            printf("%s<->",temp->data);
+            temp = temp->next;
+        }
+        printf("%s<->",tail->data);
+        printf("null");
+    }
+    
+    void main(){
+        insertLast("Hello");
+        insertLast("Faiz");
+        insertLast("what's");
+        insertLast("your");
+        insertLast("plan");
+        insertLast("today?");
+        deleteFirst();
+        deleteLast();
+        display();
+    }
+  `,
+    output: `
+    Faiz<->what's<->your<->plan<->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement a string singly linkedlist with all operations",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    
+    struct Node{
+        char data[100];
+        struct Node *next;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(char str[]){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            strcpy(head->data,str);
+            tail = head;
+            tail->next = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        strcpy(newNode->data,str);
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(char str[]){
+        if(head == NULL){
+           insertFirst(str);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        strcpy(newNode->data,str);
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(char str[],int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(str);
+            return;
+        }
+         if(pos == size){
+           insertLast(str);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+         strcpy(newNode->data,str);
+        newNode->next = prev->next;
+        prev->next = newNode;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    void deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return;
+        }
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return ;
+        }
+        head = head->next;
+        size--;
+        return ;
+    }
+    void deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return;
+        }
+        if(size == 1){
+            deleteFirst();
+            return;
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        prev->next = NULL;
+        tail = prev;
+        size--;
+        return;
+    }
+    
+    int search(char str[]){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1; 
+        }
+        int indx = 0;
+        struct Node *temp = head;
+        while(temp != NULL){
+            if(strcmp(temp->data,str) == 0){
+                return indx;
+            }
+            temp = temp->next;
+            indx++;
+        }
+        return -1;
+    }
+    
+    
+    void sortList(){
+        if(size == 0 || size == 1) return;
+        for(int i = 0; i < size-1;i++){
+            struct Node *cur = head;
+            for(int j = 0;j < size - 1 - i;j++){
+                if(strcmp(cur->data , cur->next->data) > 1){
+                        char temp[100];
+                        strcpy(temp,cur->data);
+                        strcpy(temp,cur->data);
+                        strcpy(cur->data,cur->next->data);
+                        strcpy( cur->next->data,temp);
+                    }
+                cur = cur->next;
+            }
+        }
+    }
+    
+    void deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return ;
+        }
+        if(pos == 1) {
+            deleteFirst();
+            return ;
+        }
+        if(pos == size){
+            deleteLast();
+            return ;
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return ;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            temp->next = temp->next->next;
+            return;
+        }
+        return;
+    }
+    
+    void display(){
+        struct Node *temp = head;
+        while(temp != NULL){
+            printf("%s->",temp->data);
+            temp = temp->next;
+        }
+        printf("null");
+    }
+    
+    void main(){
+        insertFirst("you");
+        insertFirst("are");
+        insertFirst("how");
+        insertLast("Faiz");
+        insertInMiddle("?",4);
+        display();
+        printf("\n");
+        if(search("Faiz") != -1){
+            printf("Found!");
+        }else {
+            printf("Not found!");
+        }
+        printf("\n");
+        if(search("Kasim") != -1){
+            printf("Found!");
+        }else {
+            printf("Not found!");
+        }
+    }
+  `,
+    output: `
+    how->are->you->Faiz->?->null
+    Found!
+    Not found!
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement a string doubly linkedlist with all operations",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    
+    struct Node{
+        char data[100];
+        struct Node *next;
+        struct Node *prev;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(char str[]){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            strcpy(head->data,str);
+            tail = head;
+            tail->next = NULL;
+            head->prev = NULL;
+            tail->prev = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        printf("%s\n",str);
+        strcpy(newNode->data,str);
+        newNode->next = head;
+        newNode->prev = NULL;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(char str[]){
+        if(head == NULL){
+           insertFirst(str);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        strcpy(newNode->data,str);
+        newNode->next = NULL;
+        newNode->prev = tail;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(char str[],int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(str);
+            return;
+        }
+         if(pos == size){
+           insertLast(str);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        strcpy(newNode->data,str);
+        newNode->next = prev->next;
+        prev->next->prev = newNode;
+        prev->next = newNode;
+        newNode->prev = prev;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    void deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return;
+        }
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return;
+        }
+        head = head->next;
+        head->prev = NULL;
+        size--;
+    }
+    void deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return;
+        }
+        if(size == 1){
+            deleteFirst();
+            return;
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        prev->next = NULL;
+        tail = prev;
+        size--;
+    }
+    
+    int search(char str[]){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1; 
+        }
+        int indx = 0;
+        struct Node *temp = head;
+        while(temp != NULL){
+            if(strcmp(temp->data,str) == 0){
+                return indx;
+            }
+            temp = temp->next;
+            indx++;
+        }
+        return -1;
+    }
+    
+    
+    void sortList(){
+        if(size == 0 || size == 1) return;
+        for(int i = 0; i < size-1;i++){
+            struct Node *cur = head;
+            for(int j = 0;j < size - 1 - i;j++){
+                if(cur->next != NULL){
+                    if(strcmp(cur->data , cur->next->data) > 1){
+                        char temp[100];
+                        strcmp(temp,cur->data);
+                        strcpy(temp,cur->data);
+                        strcpy(cur->data,cur->next->data);
+                        strcpy( cur->next->data,temp);
+                    }
+                }
+                cur = cur->next;
+            }
+        }
+    }
+    
+    void deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            deleteLast();
+            return ;
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return ;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            temp->next = temp->next->next;
+            temp->next->next->prev = temp;
+        }
+    }
+    
+    void display(){
+        struct Node *temp = head;
+        while(temp != NULL){
+            printf("%s<->",temp->data);
+            temp = temp->next;
+        }
+        printf("null");
+    }
+    
+    void main(){
+        insertLast("Hello");
+        insertLast("Faiz");
+        display();
+    }
+  `,
+    output: `
+    Hello<->Faiz<->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement circular integer Linkedlist with all operations",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct Node{
+        int data;
+        struct Node *next;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(int val){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            head->data = val;
+            tail = head;
+            tail->next = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = val;
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(int val){
+        if(head == NULL){
+           insertFirst(val);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = val;
+        newNode->next = head;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(int val,int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(val);
+            return;
+        }
+         if(pos == size){
+           insertLast(val);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        newNode->data = val;
+        newNode->next = prev->next;
+        prev->next = newNode;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    int deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        int data = head->data;
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return data;
+        }
+        head = head->next;
+        size--;
+        return data;
+    }
+    int deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        if(size == 1){
+            return deleteFirst();
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        int data = tail->data;
+        prev->next = head;
+        tail = prev;
+        size--;
+        return data;
+    }
+    
+    int search(int key){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1; 
+        }
+        int indx = 0;
+        struct Node *temp = head;
+        while(temp != NULL){
+            if(temp->data == key){
+                return indx;
+            }
+            temp = temp->next;
+            indx++;
+        }
+        return -1;
+    }
+    
+    
+    void sortList(){
+        if(size == 0 || size == 1) return;
+        for(int i = 0; i < size-1;i++){
+            struct Node *cur = head;
+            for(int j = 0;j < size - 1 - i;j++){
+                if(cur->next != head){
+                    if(cur->data > cur->next->data){
+                        int t = cur->data;
+                        cur->data = cur->next->data;
+                        cur->next->data = t;
+                    }
+                }
+                cur = cur->next;
+            }
+        }
+    }
+    
+    
+    int deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return -1;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            return deleteLast();
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return -1;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            int data = temp->data;
+            temp->next = temp->next->next;
+            return data;
+        }
+        return -1;
+    }
+    
+    
+    void display(){
+        struct Node *temp = head;
+        while(temp != NULL && temp->next != head){
+            printf("%d->",temp->data);
+            temp = temp->next;
+        }
+        printf("null");
+    }
+    
+    void main(){
+        insertFirst(10);
+        insertFirst(20);
+        insertFirst(30);
+        insertFirst(40);
+        insertInMiddle(25,3);
+        display();
+    }
+  `,
+    output: `
+    40->30->25->20->10->null
+  `,
+    type: "linkedlist",
+    bookmarked: false,
+    difficulty: "easy",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
 ];
