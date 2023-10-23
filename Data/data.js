@@ -6506,6 +6506,1077 @@ void main(){
     difficulty: "easy",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
+  {
+    questionName: "Construct a binary tree from inorder and preorder",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct Node{
+        int data;
+        struct Node *left;
+        struct Node *right;
+    };
+    int indx = 0;
+    struct Node *root;
+    int findElem(int in[],int n,int elem){
+        for(int i = 0;i < n;i++){
+            if(in[i] == elem) return i;
+        }
+        return -1;
+    }
+    
+    struct Node* buildTree(int in[],int pre[],int inOrderStart,int inOrderEnd,int n){
+        // base case.
+        if(inOrderStart > inOrderEnd || indx >= n) return NULL;
+    
+        struct Node *root = (struct Node*)malloc(sizeof(struct Node));
+        int elem = pre[indx++];
+        root->data = elem;
+        int pos = findElem(in,n,elem);
+        if(pos == -1) {
+            printf("Invalid input !");
+            return NULL;
+        }
+        root->left = buildTree(in,pre,inOrderStart,pos-1,n);
+        root->right = buildTree(in,pre,pos + 1,inOrderEnd,n);
+        return root;
+    }
+    
+    
+    void preorder(struct Node *node){
+     if(node == NULL){
+        return;
+     }
+     printf("%d ",node->data);
+     preorder(node->left);
+     preorder(node->right);
+    }
+    
+    void main(){
+        int in[] = {3,1,4,0,5,2};
+        int pre[] = {0,1,3,4,2,5};
+        int n = sizeof(in)/sizeof(int);
+        root = buildTree(in,pre,0,n-1,n);
+        printf("Preorder of build tree is : ");
+        preorder(root);
+    }
+  `,
+    output: `
+    Preorder of build tree is : 0 1 3 4 2 5 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Construct a binary tree from inorder and postorder",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct Node{
+        int data;
+        struct Node *left;
+        struct Node *right;
+    };
+    int indx;
+    struct Node *root;
+    int findElem(int in[],int n,int elem){
+        for(int i = 0;i < n;i++){
+            if(in[i] == elem) return i;
+        }
+        return -1;
+    }
+    
+    struct Node* buildTree(int in[],int post[],int inOrderStart,int inOrderEnd,int n){
+        // base case.
+        if(inOrderStart > inOrderEnd || indx < 0) return NULL;
+    
+        struct Node *root = (struct Node*)malloc(sizeof(struct Node));
+        int elem = post[indx--];
+        root->data = elem;
+        int pos = findElem(in,n,elem);
+        if(pos == -1) {
+            printf("Invalid input !");
+            return NULL;
+        }
+        root->right = buildTree(in,post,pos + 1,inOrderEnd,n);
+        root->left = buildTree(in,post,inOrderStart,pos-1,n);
+        return root;
+    }
+    
+    
+    void preorder(struct Node *node){
+     if(node == NULL){
+        return;
+     }
+     printf("%d ",node->data);
+     preorder(node->left);
+     preorder(node->right);
+    }
+    
+    void main(){
+        int in[] =  {4,8,2,5,1,6,3,7};
+        int post[] = {8,4,5,2,6,7,3,1};
+        int n = sizeof(in)/sizeof(int);
+        indx = n-1;
+        root = buildTree(in,post,0,n-1,n);
+        printf("Preorder of build tree is : ");
+        preorder(root);
+    }
+  `,
+    output: `
+    Preorder of build tree is : 1 2 4 8 5 3 6 7 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Level order traversal on a Binary Tree",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct QNode {
+        struct TNode *data;
+        struct QNode *next;
+    };
+    
+    struct QNode *front = NULL,*rear = NULL;
+    int Qsize = 0;
+    int isEmpty(){
+        if(Qsize == 0){
+            return 1;
+        }
+        return 0;
+    }
+    void add(struct TNode *val){
+        if(rear == NULL){
+            rear = (struct QNode*)malloc((sizeof(struct QNode)));
+            rear->data = val;
+            rear->next = NULL;
+            front = rear;
+            Qsize++;
+            return;
+        }
+        struct QNode *temp = (struct QNode*)malloc((sizeof(struct QNode)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+        temp->data = val;
+        temp->next = NULL;
+        rear->next = temp;
+        rear = temp;
+        Qsize++;
+    }
+    
+    struct TNode* remove1(){
+        if(Qsize == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        struct TNode *val = front->data;
+        struct QNode *temp = front;
+        front = front->next;
+        free(temp);
+        Qsize--;
+        return val;
+    }
+    
+    struct TNode* peek(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return front->data; 
+    }
+    int isQEmpty(){
+        if(Qsize == 0) return 1;
+        return 0;
+    }
+    void levelOrder(struct TNode *root){
+        add(root);
+        add(NULL);
+        while(!isQEmpty()){
+            struct TNode *cur = remove1();
+            if(cur == NULL){
+                if(isQEmpty() == 1) break;
+                else {
+                    add(NULL);
+                }
+            }else {
+                printf("%d ",cur->data);
+                if(cur->left != NULL) add(cur->left);
+                if(cur->right != NULL) add(cur->right);
+            }
+        }
+    
+    }
+    
+    
+    void main(){
+        int in[] =  {4,8,2,5,1,6,3,7};
+        int post[] = {8,4,5,2,6,7,3,1};
+        int n = sizeof(in)/sizeof(int);
+        indx = n-1;
+        root = buildTree(in,post,0,n-1,n);
+        levelOrder(root);
+    }
+    
+  `,
+    output: `
+    1 2 3 4 5 6 7 8 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Left view of binary tree",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    struct TNode{
+        int data;
+        int level;
+        struct TNode *left;
+        struct TNode *right;
+    };
+    void updateLevel(struct TNode *node,int level){
+        if(node == NULL){
+           return;
+        }
+        node->level = level;
+        updateLevel(node->left,level+1);
+        updateLevel(node->right,level+1);
+       }
+    
+    void leftView(struct TNode *root){
+        int level = 1;
+        add(root);
+        add(NULL);
+        while(!isQEmpty()){
+            struct TNode *cur = remove1();
+            if(cur == NULL){
+                if(isQEmpty() == 1) break;
+                else {
+                    add(NULL);
+                }
+            }else {
+                if(cur->level == level) {
+                    printf("%d ",cur->data);
+                    level++;
+                }
+                if(cur->left != NULL) add(cur->left);
+                if(cur->right != NULL) add(cur->right);
+            }
+        }
+    }
+    void main(){
+        int in[] =  {4,8,2,5,1,6,3,7};
+        int post[] = {8,4,5,2,6,7,3,1};
+        int n = sizeof(in)/sizeof(int);
+        indx = n-1;
+        root = buildTree(in,post,0,n-1,n);
+        updateLevel(root,1);
+        leftView(root);
+    }
+    
+    
+    
+    
+  `,
+    output: `
+    1 2 4 8
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Right view of binary tree",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    struct TNode{
+        int data;
+        int level;
+        struct TNode *left;
+        struct TNode *right;
+    };
+    void updateLevel(struct TNode *node,int level){
+        if(node == NULL){
+           return;
+        }
+        node->level = level;
+        updateLevel(node->left,level+1);
+        updateLevel(node->right,level+1);
+       }
+    
+       //4. PRINT RIGHT VIEW OF BINARY TREE
+       void rightView(struct TNode *root){
+           int level = 1;
+           add(root);
+           add(NULL);
+           while(!isQEmpty()){
+               struct TNode *cur = remove1();
+               if(cur == NULL){
+                   if(isQEmpty() == 1) break;
+                   else {
+                       add(NULL);
+                   }
+               }else {
+                   if(cur->level == level) {
+                       printf("%d ",cur->data);
+                       level++;
+                   }
+                   if(cur->right != NULL) add(cur->right);
+                   if(cur->left != NULL) add(cur->left);
+               }
+           }
+       }
+       
+    void main(){
+        int in[] =  {4,8,2,5,1,6,3,7};
+        int post[] = {8,4,5,2,6,7,3,1};
+        int n = sizeof(in)/sizeof(int);
+        indx = n-1;
+        root = buildTree(in,post,0,n-1,n);
+        updateLevel(root,1);
+        rightView(root);
+    }
+    
+  `,
+    output: `
+    1 3 7 8 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "FIND THE MAXIMUM DEPTH OF BINARY TREE",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    int getMax(int a,int b){
+        if(a > b) return a;
+        return b;
+    }
+    int maxDepth(struct TNode *root){
+        if(root == NULL) return 0;
+        int left = maxDepth(root->left);
+        int right = maxDepth(root->right);
+        return getMax(left,right) + 1;
+    }
+    
+    
+    void main(){
+        int in[] =  {4,8,2,5,1,6,3,7};
+        int post[] = {8,4,5,2,6,7,3,1};
+        int n = sizeof(in)/sizeof(int);
+        indx = n-1;
+        root = buildTree(in,post,0,n-1,n);
+        updateLevel(root,1);
+        printf("Maximum depth of Binary Tree is : %d",maxDepth(root));
+    }
+    
+    
+  `,
+    output: `
+    Maximum depth of Binary Tree is : 4
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "CREATE BINARY SEARCH TREE USING ARRAYS WITH ALL OPERATIONS",
+    code: `#include <stdio.h>
+    #define MAX 30
+    //7. CREATE BINARY SEARCH TREE USING ARRAYS (INSERT, DELETE, SEARCH, PREORDER, INORDER, POSTORDER, MINIMUM ELEMENT)
+    int tree[MAX];
+    int size = 0;
+    
+    void insert(int val){
+        if(size == MAX){
+            printf("Tree is Full!");
+            return;
+        }
+        // add root value.
+        if(size == 0){
+            tree[0] = val;
+            size++;
+            return;
+       }
+       int i = 0;
+       // getting correct index.
+       while(i < MAX && tree[i] != -1){
+        if(val < tree[i]){
+            i = 2*i + 1;
+        }else if(val > tree[i]){
+            i = 2*i + 2;
+        }else {
+            printf("Duplicate is not allowed!");
+            break;
+        }
+      }
+      if(i < MAX){
+        tree[i] = val;
+        size++;
+      }else {
+        printf("Tree is Full!");
+        return;
+      }
+    }
+    
+    int delete(int val){
+        if(size == 0){
+            printf("Tree is Empty!");
+            return -1;
+        }
+        if(size == 1){
+            size = 0;
+            return 0;
+        }
+         int i = 0;
+       // getting correct index.
+       while(i < MAX && tree[i] != -1){
+        if(tree[i] == val){
+            break;
+        }
+        if(val < tree[i]){
+            i = 2*i + 1;
+        }else if(val > tree[i]){
+            i = 2*i + 2;
+        }
+      }
+      if(i < MAX && tree[i] != -1){
+        size--;
+        int val = tree[i];
+        tree[i] = -1;
+        return i;
+      }else {
+        printf("Value not found!");
+        return -1;
+      }
+    
+    }
+    
+    
+    int search(int val){
+        if(size == 0){
+            printf("Tree is Empty!");
+            return -1;
+        }
+         int i = 0;
+       // getting correct index.
+       while(i < MAX && tree[i] != -1){
+        if(tree[i] == val){
+            break;
+        }
+        if(val < tree[i]){
+            i = 2*i + 1;
+        }else if(val > tree[i]){
+            i = 2*i + 2;
+        }
+      }
+      if(i < MAX && tree[i] != -1){
+        return i;
+      }else {
+        printf("Value not found!");
+        return -1;
+      }
+    }
+    
+    
+    void preOrder(int index){
+     if(index >= MAX || index < 0){
+        return;
+     }
+     printf("%d ",tree[index]);
+     int leftIndx = 2*index + 1;
+     int rightIndx = 2*index + 2;
+     if(tree[leftIndx] != -1) preOrder(leftIndx);
+     if(tree[rightIndx] != -1) preOrder(rightIndx);
+    }
+    
+    void inOrder(int index){
+     if(index >= MAX || index < 0){
+        return;
+     }
+     int leftIndx = 2*index + 1;
+     int rightIndx = 2*index + 2;
+     if(tree[leftIndx] != -1) inOrder(leftIndx);
+     printf("%d ",tree[index]);
+     if(tree[rightIndx] != -1) inOrder(rightIndx);
+    }
+    
+    void postOrder(int index){
+     if(index >= MAX || index < 0){
+        return;
+     }
+     int leftIndx = 2*index + 1;
+     int rightIndx = 2*index + 2;
+     if(tree[leftIndx] != -1) postOrder(leftIndx);
+     if(tree[rightIndx] != -1) postOrder(rightIndx);
+     printf("%d ",tree[index]);
+    }
+    
+    int getMin(){
+        if(size == 0){
+            return -1;
+        }
+        int i = 0;
+        int prev = -1;
+         // getting correct index.
+       while(i < MAX && tree[i] != -1){
+            prev = i;
+            i = 2*i + 1;
+      }
+      if(prev < MAX) return tree[prev];
+    }
+    
+    void main(){
+      for(int i = 0;i < MAX;i++){
+        tree[i] = -1;
+      }
+      insert(100);
+      insert(80);
+      insert(85);
+      insert(70);
+      insert(110);
+      insert(50);
+      insert(40);
+      insert(105);
+      insert(120);
+      delete(70);
+      insert(60);
+      printf("\nKey Found At Index : %d \n",search(60));
+      printf("\nMin : %d \n",getMin());
+      printf("\nPreOrder : ");
+      preOrder(0);
+      printf("\nInorder : ");
+      inOrder(0);
+      printf("\nPostOrder : ");
+      postOrder(0);
+      printf("\n");
+     
+    }
+    
+    
+  `,
+    output: `
+    Key Found At Index : 3 
+
+    Min : 40
+    
+    PreOrder : 100 80 60 50 40 85 110 105 120  
+    Inorder : 40 50 60 80 85 100 105 110 120   
+    PostOrder : 40 50 60 85 80 105 120 110 100 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "CREATE BINARY SEARCH TREE WITH DYNAMICALLY WITH ALL OPERATIONS",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    //8. CREATE BINARY SEARCH TREE DYNAMICALLY (INSERT, DELETE, SEARCH, PREORDER, INORDER, POSTORDER, MINIMUM ELEMENT)
+    struct Tree{
+        int data;
+        struct Tree *left;
+        struct Tree *right;
+    };
+    struct Tree *root = NULL,*newNode,*search,*prevSearch;
+    void insert(int val){
+        if(root == NULL){
+            root = (struct Tree*)malloc(sizeof(struct Tree));
+            root->data = val;
+            root->left = NULL;
+            root->right = NULL;
+            return;
+        }
+        newNode = (struct Tree*)malloc(sizeof(struct Tree));
+        if(newNode != NULL){
+            prevSearch  = NULL;
+            search = root;
+            while(search != NULL){
+                if(search->data > val){
+                    prevSearch = search;
+                    search = search->left;
+                }else if(search->data < val){
+                    prevSearch = search;
+                    search = search->right;
+                }else {
+                    printf("Duplicate is not allowed!");
+                    return;
+                }
+            }
+             // inserting the node 
+            if(prevSearch->data > val){
+                prevSearch->left =  newNode;
+                prevSearch->left->data = val;
+              }
+            if(prevSearch->data < val){
+                prevSearch->right = newNode;
+                prevSearch->right->data = val;
+            }
+            newNode->left = NULL;
+            newNode->right = NULL;
+        }
+    }
+    
+    struct Tree *prevIS = NULL;
+    struct Tree* findInorderSuccessor(struct Tree *node){
+        if(node == NULL){
+            return node;
+        }
+        while(node->left != NULL){
+            prevIS = node;
+            node = node->left;
+        }
+        return node;
+    }
+    
+    int delete(int val){
+        prevSearch = NULL;
+        search = root;
+        while(search != NULL){
+            // search left move krega
+            if(search->data > val){
+                prevSearch = search;
+                search = search->left;
+            // search right move krega
+            }else if(search->data < val){
+                prevSearch = search;
+                search = search->right;
+            }else { // search eqaul hai value k
+                // no child node.
+                if(search->left == NULL && search->right == NULL){
+                    if(prevSearch->data > val){
+                        prevSearch->left = NULL;
+                    }else if(prevSearch->data < val){
+                        prevSearch->right = NULL;
+                    }
+                }
+                // one-child node.
+                if(search->left == NULL || search->right == NULL){
+                    if(prevSearch->data > val){
+                        // left side
+                        if(search->left == NULL){
+                            prevSearch->left = search->right;
+                        }else{
+                            prevSearch->left = search->left;
+                        }
+                    }else {
+                        // right side
+                         if(search->left == NULL){
+                            prevSearch->right = search->right;
+                        }else{
+                            prevSearch->right = search->left;
+                        }
+                    }
+                }
+               // 2 child  
+                if(search->left != NULL && search->right != NULL){
+                //1. find successor.
+                struct Tree *IS = findInorderSuccessor(search->right);
+                //2. swap data of succsessor with node to be deleetd.
+                 search->data = IS->data;
+                //3. delete succsessor.
+                prevIS->left = NULL;
+            }
+                break;
+            }
+        }
+    }
+    
+    int searchFunc(int val){
+        if(root == NULL){
+            return 0;
+        }
+        search = root;
+        while(search != NULL){
+            if(search->data == val){
+                return 1;
+            }
+            if(search->data > val){
+                search = search->left;
+            }else {
+                search = search->right;
+            }
+        }
+        return 0;
+    }
+    
+    void preorder(struct Tree *node){
+        if(node == NULL){
+            return;
+        }
+        printf("%d ",node->data);
+        preorder(node->left);
+        preorder(node->right);
+    }
+    void inOrder(struct Tree *node){
+        if(node == NULL){
+            return;
+        }
+        inOrder(node->left);
+        printf("%d ",node->data);
+        inOrder(node->right);
+    }
+    void postOrder(struct Tree *node){
+        if(node == NULL){
+            return;
+        }
+        postOrder(node->left);
+        postOrder(node->right);
+        printf("%d ",node->data);
+    }
+    
+    int getMin(){
+        if(root == NULL){
+            return -1;
+        }
+        search = root;
+        while(search != NULL){
+            prevSearch = search;
+            search = search->left;
+        }
+        return prevSearch->data;
+    }
+    
+    void main(){
+        insert(100);
+        insert(110);
+        insert(120);
+        insert(90);
+        insert(105);
+        insert(95);
+        insert(94);
+        insert(80);
+        delete(100);
+        printf("\nMin is : %d",getMin());
+        printf("\nPreOrder : ");
+        preorder(root);
+        printf("\nInorder : ");
+        inOrder(root);
+        printf("\nPostOrder : ");
+        postOrder(root);
+    }
+  `,
+    output: `
+    Min is : 80
+    PreOrder : 105 90 80 95 94 110 120  
+    Inorder : 80 90 94 95 105 110 120   
+    PostOrder : 80 94 95 90 120 110 105 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "FIND INORDER PREDECESSOR AND INORDER SUCCESSOR OF BINARY SEARCH TREE (DYNAMICALLY REPRESENTED)",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+  
+        int data;
+        struct Tree *left;
+        struct Tree *right;
+    };
+    struct Tree *root = NULL,*newNode,*search,*prevSearch;
+    struct Tree* findInSucessor(struct Tree *node){
+        if(node == NULL){
+            return node;
+        }
+        node = node->right;
+        while(node->left != NULL){
+            node = node->left;
+        }
+        return node;
+    }
+    struct Tree* findPrecedessor(struct Tree *node){
+        if(node == NULL){
+            return node;
+        }
+        node = node->left;
+        while(node->right != NULL){
+            node = node->right;
+        }
+        return node;
+    }
+    void main(){
+        insert(100);
+        insert(110);
+        insert(120);
+        insert(105);
+        insert(85);
+        insert(70);
+        insert(80);
+        printf("INORDER SUCCESSOR is : %d\n",(findInSucessor(root)->data));
+        printf("PREDECESSOR  is : %d",(findPrecedessor(root)->data));
+    }
+  `,
+    output: `
+    INORDER SUCCESSOR is : 105
+    PREDECESSOR  is : 85
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "FIND INORDER PREDECESSOR AND INORDER SUCCESSOR OF BINARY SEARCH TREE (DYNAMICALLY REPRESENTED)",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    struct Tree{
+        int data;
+        struct Tree *left;
+        struct Tree *right;
+    };
+    struct Tree *root = NULL,*newNode,*search,*prevSearch;
+    struct Tree* findInSucessor(struct Tree *node){
+        if(node == NULL){
+            return node;
+        }
+        node = node->right;
+        while(node->left != NULL){
+            node = node->left;
+        }
+        return node;
+    }
+    struct Tree* findPrecedessor(struct Tree *node){
+        if(node == NULL){
+            return node;
+        }
+        node = node->left;
+        while(node->right != NULL){
+            node = node->right;
+        }
+        return node;
+    }
+    void main(){
+        insert(100);
+        insert(110);
+        insert(120);
+        insert(105);
+        insert(85);
+        insert(70);
+        insert(80);
+        printf("INORDER SUCCESSOR is : %d\n",(findInSucessor(root)->data));
+        printf("PREDECESSOR  is : %d",(findPrecedessor(root)->data));
+    }
+  `,
+    output: `
+    INORDER SUCCESSOR is : 105
+    PREDECESSOR  is : 85
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "CREATE BINARY TREE TO BINARY SEARCH TREE THROUGH ARRAY.",
+    code: `#include <stdio.h>
+    #define MAX 30
+
+    int tree[MAX];
+    int size = 0;
+    
+    void insert(int val){
+        if(size == MAX){
+            printf("Tree is Full!");
+            return;
+        }
+        // add root value.
+        if(size == 0){
+            tree[0] = val;
+            size++;
+            return;
+       }
+       int i = 0;
+       // getting correct index.
+       while(i < MAX && tree[i] != -1){
+        if(val < tree[i]){
+            i = 2*i + 1;
+        }else if(val > tree[i]){
+            i = 2*i + 2;
+        }else {
+            printf("Duplicate is not allowed!");
+            break;
+        }
+      }
+      if(i < MAX){
+        tree[i] = val;
+        size++;
+      }else {
+        printf("Tree is Full!");
+        return;
+      }
+    }
+    
+    void convertIntoBST(int bt[],int n){
+        for(int i = 0; i < n;i++){
+          insert(bt[i]);
+        }
+    }
+    
+    void main(){
+      for(int i = 0;i < MAX;i++){
+        tree[i] = -1;
+      }
+      int BT[7];
+      BT[0] = 100;
+      BT[1] = 80;
+      BT[2] = 110;
+      BT[3] = 70;
+      BT[4] = 85;
+      BT[5] = 105;
+      BT[6] = 120;
+      convertIntoBST(BT,7);
+      printf("\nPreOrder : ");
+      preOrder(0);
+      printf("\nInorder : ");
+      inOrder(0);
+      printf("\nPostOrder : ");
+      postOrder(0);
+      printf("\n");
+     
+    }
+  `,
+    output: `
+    PreOrder : 100 80 70 85 110 105 120  
+    Inorder : 70 80 85 100 105 110 120   
+    PostOrder : 70 85 80 105 120 110 100 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "FIND KTH SMALLEST ELEMENT IN A BINARY SEARCH TREE THROUGH ARRAY",
+    code: `#include <stdio.h>
+    #define MAX 30
+
+    int tree[MAX];
+    int size = 0;
+    
+    int track = 0;
+    int findKthSmall(int index,int k){
+      if(index >= MAX || index < 0 || tree[index] == -1){
+        return -1;
+     }
+     int leftIndx = 2*index + 1;
+     int rightIndx = 2*index + 2;
+     int left = findKthSmall(leftIndx,k);
+      if(left != -1){
+        return left;
+      }
+     track++;
+     if(track == k){
+        return tree[index];
+     }
+     return findKthSmall(rightIndx,k);
+    }
+    
+    void main(){
+      for(int i = 0;i < MAX;i++){
+        tree[i] = -1;
+      }
+     insert(100);
+     insert(80);
+     insert(110);
+     insert(70);
+     insert(85);
+     insert(105);
+     insert(120);
+   
+      printf("\\n\Inorder : ");
+      inOrder(0);
+      printf("\\n\%d smallest elem is : %d",3,findKthSmall(0,3));
+  
+     
+    }
+  `,
+    output: `
+    Inorder : 70 80 85 100 105 110 120 
+    3 smallest elem is : 85
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "FIND KTH Largest ELEMENT IN A BINARY SEARCH TREE THROUGH ARRAY",
+    code: `#include <stdio.h>
+    #define MAX 30
+
+    int tree[MAX];
+    int size = 0;
+
+    int track = 0;
+    int findKthLargest(int index,int k){
+        if(index >= MAX || index < 0 || tree[index] == -1){
+          return -1;
+       }
+       int leftIndx = 2*index + 1;
+       int rightIndx = 2*index + 2;
+       int left = findKthLargest(leftIndx,k);
+        if(left != -1){
+          return left;
+        }
+       track++;
+       if(track == size-k+1){
+          return tree[index];
+       }
+       return findKthLargest(rightIndx,k);
+      }
+      
+      
+    void main(){
+      for(int i = 0;i < MAX;i++){
+        tree[i] = -1;
+      }
+     insert(100);
+     insert(80);
+     insert(110);
+     insert(70);
+     insert(85);
+     insert(105);
+     insert(120);
+   
+      printf("\\n\Inorder : ");
+      inOrder(0);
+      printf("\\n\%d largest elem is : %d",3,findKthLargest(0,3));
+  
+     
+    }
+  `,
+    output: `
+    Inorder : 70 80 85 100 105 110 120 
+    3 largest elem is : 105
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
 ];
 
 questions.forEach((ques, indx) => {
