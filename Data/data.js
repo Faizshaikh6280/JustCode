@@ -804,195 +804,17 @@ Second array elements : 1 2 `,
   {
     questionName:
       "Create a dictionary with search create and delete operations.",
-    code: `#include <math.h>
-    #include <stdio.h>
-    #include <conio.h>
-    #include <Math.h>
-    #include <string.h>
-    //convert in uppercase ?
-    char toUpperCase(char ch){
-        return (char)(ch&'_');
-    }
-    //convert in uppercase ?
-    char toLowerCase(char ch){
-        return (char)(ch|' ');
-    }
-    
-    int getlen(char str[]){
-        int l = 0;
-        while(str[l]) l++;
-        return l-1;
-    }
-    
-    int isEqual(char str1[],char str2[]){
-        if(getlen(str1) != getlen(str2)) return 0;
-    
-        int i = 0;
-        while(str1[i] && str2[i]){
-            if(str1[i] != str2[i]) return 0;
-            i++;
-        }
-    
-        return 1;
-    };
-    //copy that string into another string ?
-    void copyStr(int str1[],int str2[]){
-        int i = 0;
-        while(str1[i]){
-           str2[i] = str1[i];
-           i++;
-        }
-    }
-    int isPallindrom(char str[]){
-        int n = getlen(str);
-        int s = 0,e = n-1;
-        while(s < e){
-            if(str[s] != str[e]) return 0;
-            s++;
-            e--;
-        }
-        return 1;
-    }
-    
-    void reverse(char str[]){
-        int n = getlen(str);
-        int s = 0,e = n-1;
-        while(s < e){
-         char temp = str[s];
-         str[s] = str[e];
-         str[e] = temp;
-         s++;
-         e--;
-        }
-    }
-    
-    int difference(char str1[],char str2[],int i){
-        return (int)(str1[i] - str2[i]);
-    }
-    int isCharExists(char str[],char ch){
-        int i = 0;
-        while(str[i]){
-            if(str[i] == ch) return 1;
-            i++;
-        }
-        return 0;
-    }
-    
-    
-    
-    int countVowel(char str[]){
-        int i = 0;
-        int count = 0;
-        while(str[i]){
-          if(str[i] == 'a' || str[i] == 'A' ||  str[i] == 'e' || str[i] == 'E' || str[i] == 'o' || str[i] == 'O' || str[i] == 'i' || str[i] == 'I' || str[i] == 'u' || str[i] == 'U'){
-            count++;
-          }
-          i++;
-        }
-        return count;
-    }
-    
-    
-    char convertIntoChar(char str[]){
-         int sum = 0;
-        int i = 0;
-        while(str[i]){
-            sum += (int)str[i];
-            i++;
-        }
-        return (char)(sum);
-    }
-    
-    
-    int convertIntoInt(char str1[]){
-        int ans = 0;
-        int i = 0;
-        while(str1[i] != '\0'){
-          ans = ans*10 + (str1[i] - '0');
-          i++;
-        }
-    
-        return ans;
-    }
-    float convertIntoFloat(char str1[]){
-       int integer = 0;
-        int i = 0;
-        while(str1[i] != 46){
-          integer = integer*10 + (str1[i] - '0');
-          i++;
-        }
-        float decimal = 0;
-        i++;
-        while(str1[i]){
-          decimal = decimal*10 + (str1[i] - '0');
-          i++;
-        }
-        while(decimal > 1){
-            decimal /= 10;
-        }
-        float ans = integer + decimal;
-        return ans;
-    }
-    
-    
-    void countWords(){
-         char str1[20],c;
-        int indx = 0;
-       while((c = getchar()) != ';'){
-          str1[indx++] = c;
-       }
-        str1[indx] = '\0';
-        int numChar = 0,numWord = 0,numSpace = 0,numlines = 0,j = 0;
-        int i = 0;
-        while(str1[i]){
-            if(str1[i] != ' ' && str1[i] != 10) {
-                numChar++;
-                j++;
-            }
-            else{
-                if(str1[i] != 10) numSpace++;
-                if(numChar > 0){
-                numWord++;
-                numChar = 0;
-                };
-                
-            };
-            if(str1[i] == 10) numlines++;
-            i++;
-        }
-        printf("Number of characters is : %d \n", j);
-        printf("Number of Words is : %d \n", numWord+1);
-        printf("Number of spaces is : %d \n", numSpace);
-        printf("Number of lines is : %d \n", numlines+1);
-    }
-    
-    void printPossibility(char p[],char up[]){
-      if(strlen(up) <= 0){
-        printf("%s ",p);
-        return;
-      }
-      char ch = up[0];
-      char newU[strlen(up)-1];
-      for(int i = 0;i < (strlen(up)-1);i++){
-        newU[i] = up[i+1];
-      }
-      char newP[strlen(p)+1];
-      for(int i = 0;i < (strlen(p));i++){
-        newP[i] = p[i];
-      }
-      newP[strlen(p)] = ch;
-    }
-    
+    code: `#include <stdio.h>
+        #include <string.h>
     void dictionary(){
         char *words[10];
         char *meanings[10];
-    
     
         char word[30],meaning[30];
         int i = 0;
         char choice;
         while(choice != '4'){
-          printf("\n****MENU*****\n1.Create\n2.Delete\n3.Search\n4.Exit\n");
+          printf("\\n\****MENU*****\\n\ 1.Create\\n\ 2.Delete\\n\ 3.Search\\n\ 4.Exit\\n\");
           fflush(stdin);
           choice = getchar();
           switch(choice){
@@ -1006,7 +828,7 @@ Second array elements : 1 2 `,
             i++;
             break;
             case '2':
-            printf("\nEnter a word to be deleted: \n");
+            printf("\\n\ Enter a word to be deleted: \\n\");
             char word[30];
             scanf("%s",word);
             int delIndx = -1;
@@ -1040,7 +862,7 @@ Second array elements : 1 2 `,
                     break;
                 }
             }
-            if(indx != -1) printf("\nMeaning of the %s is : %s\n",word,meanings[indx]);
+            if(indx != -1) printf("\\n\Meaning of the %s is : %s\\n\",word,meanings[indx]);
             else  printf("Word does not exits!");
             break;
           }
@@ -1050,7 +872,6 @@ Second array elements : 1 2 `,
     
     void main(){
         dictionary();
-     
     }   
     
     
@@ -1136,250 +957,8 @@ Second array elements : 1 2 `,
   },
   {
     questionName: "Trim the spaces from both end",
-    code: `#include <math.h>
-    #include <stdio.h>
-    #include <conio.h>
-    #include <Math.h>
+    code: `#include <stdio.h>
     #include <string.h>
-    //convert in uppercase ?
-    char toUpperCase(char ch){
-        return (char)(ch&'_');
-    }
-    //convert in uppercase ?
-    char toLowerCase(char ch){
-        return (char)(ch|' ');
-    }
-    
-    int getlen(char str[]){
-        int l = 0;
-        while(str[l]) l++;
-        return l-1;
-    }
-    
-    int isEqual(char str1[],char str2[]){
-        if(getlen(str1) != getlen(str2)) return 0;
-    
-        int i = 0;
-        while(str1[i] && str2[i]){
-            if(str1[i] != str2[i]) return 0;
-            i++;
-        }
-    
-        return 1;
-    };
-    //copy that string into another string ?
-    void copyStr(int str1[],int str2[]){
-        int i = 0;
-        while(str1[i]){
-           str2[i] = str1[i];
-           i++;
-        }
-    }
-    int isPallindrom(char str[]){
-        int n = getlen(str);
-        int s = 0,e = n-1;
-        while(s < e){
-            if(str[s] != str[e]) return 0;
-            s++;
-            e--;
-        }
-        return 1;
-    }
-    
-    void reverse(char str[]){
-        int n = getlen(str);
-        int s = 0,e = n-1;
-        while(s < e){
-         char temp = str[s];
-         str[s] = str[e];
-         str[e] = temp;
-         s++;
-         e--;
-        }
-    }
-    
-    int difference(char str1[],char str2[],int i){
-        return (int)(str1[i] - str2[i]);
-    }
-    int isCharExists(char str[],char ch){
-        int i = 0;
-        while(str[i]){
-            if(str[i] == ch) return 1;
-            i++;
-        }
-        return 0;
-    }
-    
-    
-    
-    int countVowel(char str[]){
-        int i = 0;
-        int count = 0;
-        while(str[i]){
-          if(str[i] == 'a' || str[i] == 'A' ||  str[i] == 'e' || str[i] == 'E' || str[i] == 'o' || str[i] == 'O' || str[i] == 'i' || str[i] == 'I' || str[i] == 'u' || str[i] == 'U'){
-            count++;
-          }
-          i++;
-        }
-        return count;
-    }
-    
-    
-    char convertIntoChar(char str[]){
-         int sum = 0;
-        int i = 0;
-        while(str[i]){
-            sum += (int)str[i];
-            i++;
-        }
-        return (char)(sum);
-    }
-    
-    
-    int convertIntoInt(char str1[]){
-        int ans = 0;
-        int i = 0;
-        while(str1[i] != '\0'){
-          ans = ans*10 + (str1[i] - '0');
-          i++;
-        }
-    
-        return ans;
-    }
-    float convertIntoFloat(char str1[]){
-       int integer = 0;
-        int i = 0;
-        while(str1[i] != 46){
-          integer = integer*10 + (str1[i] - '0');
-          i++;
-        }
-        float decimal = 0;
-        i++;
-        while(str1[i]){
-          decimal = decimal*10 + (str1[i] - '0');
-          i++;
-        }
-        while(decimal > 1){
-            decimal /= 10;
-        }
-        float ans = integer + decimal;
-        return ans;
-    }
-    
-    
-    void countWords(){
-         char str1[20],c;
-        int indx = 0;
-       while((c = getchar()) != ';'){
-          str1[indx++] = c;
-       }
-        str1[indx] = '\0';
-        int numChar = 0,numWord = 0,numSpace = 0,numlines = 0,j = 0;
-        int i = 0;
-        while(str1[i]){
-            if(str1[i] != ' ' && str1[i] != 10) {
-                numChar++;
-                j++;
-            }
-            else{
-                if(str1[i] != 10) numSpace++;
-                if(numChar > 0){
-                numWord++;
-                numChar = 0;
-                };
-                
-            };
-            if(str1[i] == 10) numlines++;
-            i++;
-        }
-        printf("Number of characters is : %d \n", j);
-        printf("Number of Words is : %d \n", numWord+1);
-        printf("Number of spaces is : %d \n", numSpace);
-        printf("Number of lines is : %d \n", numlines+1);
-    }
-    
-    void printPossibility(char p[],char up[]){
-      if(strlen(up) <= 0){
-        printf("%s ",p);
-        return;
-      }
-      char ch = up[0];
-      char newU[strlen(up)-1];
-      for(int i = 0;i < (strlen(up)-1);i++){
-        newU[i] = up[i+1];
-      }
-      char newP[strlen(p)+1];
-      for(int i = 0;i < (strlen(p));i++){
-        newP[i] = p[i];
-      }
-      newP[strlen(p)] = ch;
-    }
-    
-    void dictionary(){
-        char *words[10];
-        char *meanings[10];
-    
-    
-        char word[30],meaning[30];
-        int i = 0;
-        char choice;
-        while(choice != '4'){
-          printf("\n****MENU*****\n1.Create\n2.Delete\n3.Search\n4.Exit\n");
-          fflush(stdin);
-          choice = getchar();
-          switch(choice){
-            case '1':
-            printf("Add a word : ");
-            scanf("%s",word);
-            printf("Add meaning of word : ");
-            scanf("%s",meaning);
-            words[i] = word;
-            meanings[i] = meaning;
-            i++;
-            break;
-            case '2':
-            printf("\nEnter a word to be deleted: \n");
-            char word[30];
-            scanf("%s",word);
-            int delIndx = -1;
-            for(int i = 0; i < 10;i++){
-                if(strcmp(words[i],word) == 0) {
-                    delIndx = i;
-                    break;
-                }
-            }
-            if(delIndx == -1) {
-                printf("Word does not exits!");
-                break;
-            }
-            // left shifting elements.
-            for(int i = delIndx;i < 9;i++){
-                words[i] = words[i+1];
-            }
-            for(int i = delIndx;i < 9;i++){
-                meanings[i] = meanings[i+1];
-            }
-            i--;
-            break;
-            case '3':
-            printf("Enter a word to be searched : ");
-            scanf("%s",word);
-            int indx = -1;
-            for(int i = 0; i < 10;i++){
-                printf("%s ",words[i]);
-                if(strcmp(words[i],word) == 0) {
-                    indx = i;
-                    break;
-                }
-            }
-            if(indx != -1) printf("\nMeaning of the %s is : %s\n",word,meanings[indx]);
-            else  printf("Word does not exits!");
-            break;
-          }
-        }
-    }
-    
-    
     void trimSpace(char str[]){
     
         int ch = 0,startSpace = 0,endSpace = 0;
@@ -1539,6 +1118,70 @@ void main(){
   `,
     output: `Enter a string : how are you sir?
     How Are You Sir?    
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName: "convert into char to string (for example take 10 character)",
+    code: `#include <conio.h>
+    void charToString(){
+        char ch;
+        int choice;
+        char str[11];
+        int i = 0;
+        while(i < 10){
+            printf("\\n\ 1.Add charachter\\n\ 2.Exit\\n\");
+            scanf("%d",&choice);
+            if(choice == 1){
+              printf("\\n\Enter a character : \\n\");
+              ch = getche();
+              str[i++] = ch;
+            }
+            else if(choice == 2){
+                break;
+            }
+            else {
+                printf("\\n\Invalid choice");
+            }
+        }
+        str[i] = '\0';
+        printf("Your character string is : %s",str);
+    }
+    
+    void main(){
+    
+        charToString();
+    }   
+    
+    
+  `,
+    output: `1.Add charahter
+    2.Exit
+    1
+    
+    Enter a character : 
+    a
+    1.Add charahter
+    2.Exit
+    1
+    
+    Enter a character : 
+    b
+    1.Add charahter
+    2.Exit
+    
+    1
+    
+    Enter a character : 
+    c
+    1.Add charahter
+    2.Exit
+    
+    2
+    Your character string is : abc   
   `,
     type: "string",
     bookmarked: false,
@@ -7571,6 +7214,408 @@ void main(){
     output: `
     Inorder : 70 80 85 100 105 110 120 
     3 largest elem is : 105
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "FIND KTH Largest ELEMENT IN A BINARY SEARCH TREE THROUGH ARRAY",
+    code: `#include <stdio.h>
+    #define MAX 30
+
+    //10. CHECK WHETHER BINARY SEARCH TREE CONTAINS DEAD END
+    int containsDeadEnd(struct Tree* root){
+        if(root == NULL){
+            return 0;
+        }
+        if(root->left == NULL && root->right == NULL){
+            if(searchFunc(root->data - 1) == 1 && searchFunc(root->data + 1) == 1){
+                return 1;
+            }
+        }
+       return containsDeadEnd(root->left) ||  containsDeadEnd(root->right);
+    }
+    
+    void main(){
+        insert(8);
+        insert(7);
+        insert(10);
+        insert(2);
+        insert(9);
+        insert(13);
+        inOrder(root);
+       
+        if(containsDeadEnd(root)){
+            printf("\\n\ yes dead end exist");
+        }else {
+            printf("\\n\ Dead end does not exists.");
+        }
+    }
+  `,
+    output: `
+    2 7 8 9 10 13     
+    yes dead end exist
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Print preorder and postorder of BST",
+    code: `#include <stdio.h>
+    void postOrder(struct Tree *node){
+        if(node == NULL){
+            return;
+        }
+        postOrder(node->left);
+        postOrder(node->right);
+        printf("%d ",node->data);
+    }
+    void preorder(struct Tree *node){
+        if(node == NULL){
+            return;
+        }
+        printf("%d ",node->data);
+        preorder(node->left);
+        preorder(node->right);
+    }
+    
+    void main(){
+        insert(8);
+        insert(7);
+        insert(10);
+        insert(2);
+        insert(9);
+        insert(13);
+        printf("\\n\Preorder of BST : ");
+        preorder(root);
+        printf("\\n\Postorder of BST : ");
+        postOrder(root);
+    
+    }
+  `,
+    output: `
+    Preorder of BST : 8 7 2 10 9 13  
+    Postorder of BST : 2 7 9 13 10 8 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "CONSTRUCT BINARY SEARCH TREE FROM GIVEN PREORDER TRAVERSAL THROUGH ARRAYS",
+    code: `#include <stdio.h>
+    int tree[MAX];
+    int size = 0;
+    void buildBST(int pre[],int n){
+      for(int i = 0; i < n;i++){
+        insert(pre[i]);
+      }
+    }
+    void preOrder(int index){
+     if(index >= MAX || index < 0){
+        return;
+     }
+     printf("%d ",tree[index]);
+     int leftIndx = 2*index + 1;
+     int rightIndx = 2*index + 2;
+     if(tree[leftIndx] != -1) preOrder(leftIndx);
+     if(tree[rightIndx] != -1) preOrder(rightIndx);
+    }
+    void main(){
+      for(int i = 0;i < MAX;i++){
+        tree[i] = -1;
+      }
+    
+      int pre[] = {100,80,70,85,110,105,120};
+      int n = sizeof(pre)/sizeof(int);
+      buildBST(pre,n);
+      printf("\\n\PreOrder : ");
+      preOrder(0);
+      
+    }
+  `,
+    output: `
+    PreOrder : 100 80 70 85 110 105 120
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "CONSTRUCT BINARY SEARCH TREE FROM GIVEN PostOrder TRAVERSAL THROUGH ARRAYS",
+    code: `#include <stdio.h>
+    int tree[MAX];
+    int size = 0;
+    void insert(int val){
+        if(size == MAX){
+            printf("Tree is Full!");
+            return;
+        }
+        // add root value.
+        if(size == 0){
+            tree[0] = val;
+            size++;
+            return;
+       }
+       int i = 0;
+       // getting correct index.
+       while(i < MAX && tree[i] != -1){
+        if(val < tree[i]){
+            i = 2*i + 1;
+        }else if(val > tree[i]){
+            i = 2*i + 2;
+        }else {
+            printf("Duplicate is not allowed!");
+            break;
+        }
+      }
+      if(i < MAX){
+        tree[i] = val;
+        size++;
+      }else {
+        printf("Tree is Full!");
+        return;
+      }
+    }
+    void preOrder(int index){
+     if(index >= MAX || index < 0){
+        return;
+     }
+     printf("%d ",tree[index]);
+     int leftIndx = 2*index + 1;
+     int rightIndx = 2*index + 2;
+     if(tree[leftIndx] != -1) preOrder(leftIndx);
+     if(tree[rightIndx] != -1) preOrder(rightIndx);
+    }
+
+    void buildBST(int arr[],int n){
+      for(int i = n-1; i >= 0 ;i--){
+        insert(arr[i]);
+      }
+    }
+    
+    void main(){
+      for(int i = 0;i < MAX;i++){
+        tree[i] = -1;
+      }
+    
+      int post[] = {70,85,80,105,120,110,100};
+      int n = sizeof(post)/sizeof(int);
+      buildBST(post,n);
+      buildBST(pre,n);
+      printf("\\n\ PreOrder : ");
+      preOrder(0);
+      printf("\\n\ PostOrder : ");
+      postOrder(0);
+    }
+  `,
+    output: `
+   PreOrder : 100 80 70 85 110 105 120  
+   PostOrder : 70 85 80 105 120 110 100   
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      " COUNT THE NUMBER OF NODES IN BINARY SEARCH TREE CONSTRUCTED DYNAMICALLY",
+    code: `#include <stdio.h>
+    int countNodes(struct Tree *root){
+        if(root == NULL) return 0;
+        int leftCount = countNodes(root->left);
+        int rightCount = countNodes(root->right);
+        return leftCount+rightCount+1;
+    }
+    
+    void main(){
+        insert(100);
+        insert(80);
+        insert(110);
+        insert(85);
+        insert(70);
+        insert(105);
+        insert(120);
+        printf("\\n\ Preorder of BST : ");
+        preorder(root);
+        printf("\\n\ Total no. of nodes in BST : %d",countNodes(root));
+    
+    }
+  `,
+    output: `
+    Preorder of BST : 100 80 70 85 110 105 120 
+    Total no. of nodes in BST : 7
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Morris Traversal on BST",
+    code: `#include <stdio.h>
+    void morisTraversal(struct Tree *root){ // (same as inorder traversal but s.c is O(1))
+        struct Tree *cur = root;
+        while(cur != NULL){
+            if(cur->left == NULL){
+                printf("%d ",cur->data);
+                cur = cur->right;
+            }else {
+                struct Tree *pred = cur;
+                pred = pred->left;
+                while(pred->right != NULL && pred->right != cur){
+                    pred = pred->right;
+                }
+                if(pred->right == NULL){
+                    pred->right = cur;
+                    cur = cur->left;
+                }else {
+                    pred->right = NULL;
+                    printf("%d ",cur->data);
+                    cur = cur->right;
+                }
+            }
+        }
+    }
+    void main(){
+        insert(100);
+        insert(80);
+        insert(110);
+        insert(85);
+        insert(70);
+        insert(105);
+        insert(120);
+        printf("\\n\ Morris Traversal of BST : ");
+        morisTraversal(root);
+    }
+  `,
+    output: `
+    Morris Traversal of BST : 70 80 85 100 105 110 120 
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "CREATE STRICTLY BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)",
+    code: `#include <stdio.h>
+    struct Tree* getNode(struct Tree* root,int val){
+        if(root == NULL) return NULL;
+        if(root->data == val) return root;
+        struct Tree *left = getNode(root->left,val);
+        if(left != NULL){
+            return left;
+        }
+        return getNode(root->right,val);
+    }
+    void insertAtNode(struct Tree *par,int val){
+        struct Tree *nn = (struct Tree*)malloc(sizeof(struct Tree));
+        if(par != NULL){
+            nn->data = val;
+            if(par->left == NULL){
+                par->left = nn;
+            }else {
+                par->right = nn;
+            }
+            nn->left = NULL;
+            nn->right = NULL;
+        }else {
+            printf("\nParent val does not exist!");
+        }
+    }
+    
+    void buildStrictlyBinaryTree(){
+        int val1,val2,parValue,choice;
+        printf("Enter a root node : ");
+        scanf("%d",&parValue);
+        insert(parValue);
+        while(1){
+            printf("\\n\ 1.Insert\\n\ 2.Exit\\n\ ");
+            scanf("%d",&choice);
+            if(choice == 1){
+            printf("\\n\ PreOrder of Tree : ");
+            preorder(root);
+            printf("\\n\ Where you want to insert : ");
+            scanf("%d",&parValue);
+            struct Tree *par = getNode(root,parValue);
+            if(par == NULL){
+                printf("\\n\ Parent val does not exist!");
+                continue;
+            }
+            printf("\\n\ Enter value of left child : ");
+            scanf("%d",&val1);
+            printf("\\n\ Enter value of right child : ");
+            scanf("%d",&val2);
+            insertAtNode(par,val1);
+            insertAtNode(par,val2);
+            }else if(choice == 2){
+                break;
+            }else {
+                printf("\\n\ Invalid choice!");
+            }
+        }
+         printf("\\n\ Inorder of Tree : ");
+         inOrder(root);
+    }
+    
+    void main(){
+       
+        buildStrictlyBinaryTree();
+    }
+  `,
+    output: `
+    Enter a root node : 100
+
+    1.Insert
+    2.Exit  
+    1
+    
+    PreOrder of Tree : 100     
+    Where you want to insert : 100
+    
+    Enter value of left child : 80
+    
+    Enter value of right child : 110
+    
+    1.Insert
+    2.Exit  
+    1
+    
+    PreOrder of Tree : 100 80 110 
+    Where you want to insert : 80 
+    
+    Enter value of left child : 70
+    
+    Enter value of right child : 85
+    
+    1.Insert
+    2.Exit  
+    1
+    
+    PreOrder of Tree : 100 80 70 85 110 
+    Where you want to insert : 110
+    
+    Enter value of left child : 105
+    
+    Enter value of right child : 120
+    
+    1.Insert
+    2.Exit
+    2
+    
+    Inorder of Tree : 70 80 85 100 105 110 120
   `,
     type: "binarytree",
     bookmarked: false,

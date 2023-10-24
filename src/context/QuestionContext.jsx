@@ -123,9 +123,7 @@ function QuestionProvider({ children }) {
   const getQuestion = useCallback(
     function (id) {
       if (Number(id) === currentQuestion.id) return;
-
       dispatch({ type: "loading" });
-
       setTimeout(function () {
         dispatch({ type: "question/loaded", payload: id });
       }, 500);

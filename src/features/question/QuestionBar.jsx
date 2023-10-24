@@ -22,11 +22,12 @@ function QuestionBar() {
             <option value="all">All</option>
             <option value="array">Array</option>
             <option value="sorting">Sorting</option>
+            <option value="string">String</option>
             <option value="searching">Searching</option>
             <option value="recursion">Recursion</option>
             <option value="stack">Stack</option>
             <option value="queue">Queue</option>
-            <option value="binarytress">Binary Trees</option>
+            <option value="binarytree">Binary Trees</option>
             <option value="linkedlist">Linked list</option>
           </select>
         </div>
