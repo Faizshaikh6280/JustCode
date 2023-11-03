@@ -728,6 +728,26 @@ Second array elements : 1 2 `,
   {
     questionName: "Trapping Rain Water Problem (Bonus)",
     code: `#include <math.h>
+    int leftMaxBound(int arr[],int leftBound[],int size){
+        leftBound[0] = arr[0];
+        int max = leftBound[0];
+        for(int i = 1;i < size;i++){
+            if(arr[i] > max){
+                max = arr[i];
+            }
+            leftBound[i] = max;
+        }
+    }
+    int rightMaxbound(int arr[],int rightBound[],int size){
+        rightBound[size - 1] = arr[size - 1];
+        int max = rightBound[size - 1];
+        for(int i = size - 2;i >= 0;i--){
+            if(arr[i] > max){
+                max = arr[i];
+            }
+            rightBound[i] = max;
+        }
+    }
     int calcTrappedWater(int arr[],int leftBound[],int rightBound[],int size,int width){
       int trappedWaterSum = 0;
       for(int i = 0;i < size;i++){
@@ -804,17 +824,16 @@ Second array elements : 1 2 `,
   {
     questionName:
       "Create a dictionary with search create and delete operations.",
-    code: `#include <stdio.h>
-        #include <string.h>
-    void dictionary(){
-        char *words[10];
-        char *meanings[10];
+    code: `void dictionary(){
+        char words[10][100];
+        char meanings[10][100];
+    
     
         char word[30],meaning[30];
         int i = 0;
         char choice;
         while(choice != '4'){
-          printf("\\n\****MENU*****\\n\ 1.Create\\n\ 2.Delete\\n\ 3.Search\\n\ 4.Exit\\n\");
+          printf("\n****MENU*****\n1.Create\n2.Delete\n3.Search\n4.Exit\n");
           fflush(stdin);
           choice = getchar();
           switch(choice){
@@ -823,12 +842,12 @@ Second array elements : 1 2 `,
             scanf("%s",word);
             printf("Add meaning of word : ");
             scanf("%s",meaning);
-            words[i] = word;
-            meanings[i] = meaning;
+            strcpy(words[i],word);
+            strcpy(meanings[i],meaning);
             i++;
             break;
             case '2':
-            printf("\\n\ Enter a word to be deleted: \\n\");
+            printf("\nEnter a word to be deleted: \n");
             char word[30];
             scanf("%s",word);
             int delIndx = -1;
@@ -844,10 +863,8 @@ Second array elements : 1 2 `,
             }
             // left shifting elements.
             for(int i = delIndx;i < 9;i++){
-                words[i] = words[i+1];
-            }
-            for(int i = delIndx;i < 9;i++){
-                meanings[i] = meanings[i+1];
+                strcpy(words[i],words[i+1]);
+                strcpy(meanings[i],meanings[i+1]);
             }
             i--;
             break;
@@ -856,19 +873,17 @@ Second array elements : 1 2 `,
             scanf("%s",word);
             int indx = -1;
             for(int i = 0; i < 10;i++){
-                printf("%s ",words[i]);
                 if(strcmp(words[i],word) == 0) {
                     indx = i;
                     break;
                 }
             }
-            if(indx != -1) printf("\\n\Meaning of the %s is : %s\\n\",word,meanings[indx]);
+            if(indx != -1) printf("\\n\ Meaning of the %s is : %s\\n\ ",word,meanings[indx]);
             else  printf("Word does not exits!");
             break;
           }
         }
     }
-    
     
     void main(){
         dictionary();
@@ -890,16 +905,35 @@ Second array elements : 1 2 `,
     2.Delete     
     3.Search     
     4.Exit       
-    3
-    Enter a word to be searched : apple
-    apple
-    Meaning of the apple is : saib
+    1
+    Add a word : mango
+    Add meaning of word : aam
     
+    ****MENU*****
+    1.Create     
+    2.Delete     
+    3.Search     
+    4.Exit       
+    3
+    Enter a word to be searched : grapes
+    Word does not exits!
+    ****MENU*****       
+    1.Create
+    2.Delete
+    3.Search
+    4.Exit
+    3
+    Enter a word to be searched : chiko
+    Word does not exits!
     ****MENU*****
     1.Create
     2.Delete
     3.Search
     4.Exit
+    3
+    Enter a word to be searched : mango
+    
+    Meaning of the mango is : aam
   `,
     type: "string",
     bookmarked: false,
@@ -2585,7 +2619,8 @@ Addtion of 5 with given num : 20
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
-    questionName: "Implement simple queue",
+    questionName:
+      "IMPLEMENT THE OPERATIONS OF DOUBLE ENDED QUEUE IN AN STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)",
     code: `#include <stdio.h>
     #define MAX 5
     int front = -1;
@@ -2663,6 +2698,327 @@ Addtion of 5 with given num : 20
     type: "queue",
     bookmarked: false,
     difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement a dynamic  doubly ended queue of string",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    
+    struct Node {
+        char data[100];
+        struct Node *next;
+    };
+    
+    struct Node *front = NULL,*rear = NULL;
+    
+    void addLast(char str[]){
+        if(rear == NULL){
+            rear = (struct Node*)malloc((sizeof(struct Node)));
+            strcpy(rear->data,str);
+            rear->next = NULL;
+            front = rear;
+            return;
+        }
+        struct Node *temp = (struct Node*)malloc((sizeof(struct Node)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+        strcpy(temp->data,str);
+        temp->next = NULL;
+        rear->next = temp;
+        rear = temp;
+    }
+    void addFirst(char str[]){
+         if(rear == NULL){
+            rear = (struct Node*)malloc((sizeof(struct Node)));
+             strcpy(rear->data,str);
+            rear->next = NULL;
+            front = rear;
+            return;
+        }
+        struct Node *temp = (struct Node*)malloc((sizeof(struct Node)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+         strcpy(rear->data,str);
+         temp->next = front;
+         front = temp;
+    }
+    
+    char* removeFirst(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        char val[100];
+        strcpy(val,front->data);
+        struct Node *temp = front;
+        front = front->next;
+        free(temp);
+        return val;
+    }
+    
+    char* removeLast(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        char val[100];
+        strcpy(val,front->data);
+        struct Node *temp = front;
+        while(temp->next !=NULL && temp->next->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = NULL;
+        rear = temp;
+        return val;
+    }
+    
+    char* getFirst(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return front->data; 
+    }
+    char* getLast(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return rear->data; 
+    }
+    void display(){
+        if(front == NULL) return;
+        struct Node *temp = front;
+        while(temp!=NULL){
+            printf("%s ",temp->data);
+            temp = temp->next;
+        }
+    }
+    void main(){
+        addFirst("India is");
+        addLast("best country");
+        addLast("It's our pleasure to live here");
+        display();
+        removeFirst();
+        removeLast();
+        printf("\\n\");
+        display();
+    
+    }
+  `,
+    output: `
+    India is best country It's our pleasure to live here 
+    best country
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Priority queue of integer using array",
+    code: `#include <stdio.h>
+    #define MAX 10
+    int size = 0;
+    int queue[MAX];
+    int priority[MAX];
+    
+    void rightShift(int index){
+        for(int j = size - 1;j >= index;j--){
+            queue[j+1] = queue[j];
+        }
+        for(int j = size-1;j >= index;j--){
+            priority[j+1] = priority[j];
+        }
+    }
+    int isEmpty(){
+        if(size == 0) return 1;
+        return 0;
+    }
+    int isFull(){
+        if(size == MAX) return 1;
+        return 0;
+    }
+    void add(int val,int pri){
+        if(size >= MAX ){
+            printf("Queue is Full!");
+            return;
+        }
+        if(size == 0){
+            queue[0] = val;
+            priority[0] = pri;
+            size++;
+            return;
+        }
+        for(int j = 0;j < MAX;j++){
+            if(priority[j] > pri){
+                rightShift(j);
+                queue[j] = val;
+                priority[j] = pri;
+                break;
+            }else {
+                // empty slot.
+                if(priority[j] == -1){
+                    queue[j] = val;
+                    priority[j] = pri;
+                    break;
+                }
+            }
+        }
+        size++;
+        return;
+    }
+    void leftShift(){
+        for(int i = 1;i < size;i++){
+            queue[i-1] = queue[i];
+            priority[i-1] = priority[i];
+        }
+    }
+    int delete(){
+        if(size == 0){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        int val = queue[0];
+        leftShift();
+        size--;
+        return val;
+    }
+    int peek(){
+        if(size == 0){
+            printf("Queue is Empty!");
+            return -1;
+        }
+        return queue[0];
+    }
+    void display(){
+        for(int i = 0;i < MAX;i++) printf("%d ",queue[i]);
+        printf("\n");
+    }
+    
+    void main(){
+        for(int i = 0;i < MAX;i++){
+        priority[i] = -1;
+        }
+        add(10,5);
+        add(20,7);
+        add(30,8);
+        add(40,2);
+        add(50,3);
+        add(60,1);
+        add(70,0);
+        add(80,4);
+        delete();
+        delete();
+        delete();
+        display();
+    }
+  `,
+    output: `
+    50 80 10 20 30 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "hard",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "IMPLEMENT THE OPERATIONS OF CIRCULAR QUEUE IN AN STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #define MAX 5
+    
+    int front = -1;
+    int rear = -1;
+    int size = 0;
+    char queue[MAX][100];
+    
+    void enque(char str[]){
+        if(front == 0 && rear == MAX-1 || front == rear+1){
+            printf("\nQueue is Full!\n");
+            return;
+        }else if(rear == -1){
+            front = rear = 0;
+        }else rear = (rear+1)%MAX;
+        strcpy(queue[rear],str);
+    }
+    
+    char* deque(){
+        if(front == -1){
+            printf("\nQueue is Empty!\n");
+            return NULL;
+        }
+        char val[100];
+         strcpy(val,queue[front]);
+        if(front == rear){
+          front = rear = -1;
+          return &val[0];
+        }
+        front = (front+1)%MAX;
+        return &val[0];
+    }
+    char* peek(){
+        if(front == -1){
+            return NULL;
+        }
+        return queue[front];
+    }
+    
+    void display(){
+      if(front == rear){
+        if(front != -1){
+            printf("%d",queue[front]);
+        }
+        printf("Queue is Empty");
+        return;
+      }
+      int i = front;
+      while(i != rear){
+        printf("%s ",queue[i]);
+        i = (i+1)%MAX;
+      }
+      printf("%s",queue[rear]);
+    }
+    
+    int isFull(){
+        if(size == MAX){
+            return 1;
+        }
+        return 0;
+    }
+    
+    int isEmpty(){
+        if(size == 0) {
+            return 1;
+        }
+        return 0;
+    }
+    
+    void main(){
+        enque("hello");
+        enque("faiz");
+        enque("how are you?");
+        enque("I'm fine bro");
+        display();
+        deque();
+        printf("\\n\");
+        display();
+    }
+  `,
+    output: `
+    hello faiz how are you? I'm fine bro
+    faiz how are you? I'm fine bro      
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
@@ -2936,6 +3292,457 @@ Addtion of 5 with given num : 20
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
+    questionName: "Implement a priority queue of string using array",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #define MAX 10
+    int size = 0;
+    char queue[MAX][100];
+    int priority[MAX];
+    
+    void rightShift(int index){
+        for(int j = size - 1;j >= index;j--){
+            strcpy(queue[j+1],queue[j]);
+        }
+        for(int j = size-1;j >= index;j--){
+            priority[j+1] = priority[j];
+        }
+    }
+    int isEmpty(){
+        if(size == 0) return 1;
+        return 0;
+    }
+    int isFull(){
+        if(size == MAX) return 1;
+        return 0;
+    }
+    void add(char val[],int pri){
+        if(size >= MAX ){
+            printf("Queue is Full!");
+            return;
+        }
+        if(size == 0){
+            strcpy(queue[0],val);
+            priority[0] = pri;
+            size++;
+            return;
+        }
+        for(int j = 0;j < MAX;j++){
+            if(priority[j] > pri){
+                rightShift(j);
+                 strcpy(queue[j],val);
+                priority[j] = pri;
+                break;
+            }else {
+                // empty slot.
+                if(priority[j] == -1){
+                    strcpy(queue[j],val);
+                    priority[j] = pri;
+                    break;
+                }
+            }
+        }
+        size++;
+        return;
+    }
+    void leftShift(){
+        for(int i = 1;i < size;i++){
+           strcpy(queue[i-1],queue[i]);
+            priority[i-1] = priority[i];
+        }
+    }
+    char* delete(){
+        if(size == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        char *val = queue[0];
+        leftShift();
+        size--;
+        return val;
+    }
+    char* peek(){
+        if(size == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return queue[0];
+    }
+    void display(){
+        for(int i = 0;i < size;i++) printf("%s ",queue[i]);
+        printf("\n");
+    }
+    
+    void main(){
+        for(int i = 0;i < MAX;i++){
+        priority[i] = -1;
+        }
+        add("by",40);
+        add("faiz",30);
+        add("hi",1);
+        add("hmm,",0);
+        delete();
+        display();
+    }
+  `,
+    output: `
+    hi faiz by 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement a priority queue of integer dynamically",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    
+    struct Node{
+        int data;
+        int priority;
+        struct Node *next;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(int val,int pri){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            head->data = val;
+            head->priority = pri;
+            tail = head;
+            tail->next = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = val;
+        newNode->priority = pri;
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(int val,int pri){
+        if(head == NULL){
+           insertFirst(val,pri);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = val;
+        newNode->priority = pri;
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(int val,int pri,int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(val,pri);
+            return;
+        }
+         if(pos == size){
+           insertLast(val,pri);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        newNode->data = val;
+        newNode->data = pri;
+        newNode->next = prev->next;
+        prev->next = newNode;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    int deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        int data = head->data;
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return data;
+        }
+        head = head->next;
+        size--;
+        return data;
+    }
+    int deleteLast(){
+         if(size == 0){
+            printf("List is Empty!");
+            return -1;
+        }
+        if(size == 1){
+            return deleteFirst();
+        }
+        struct Node *prev = head;
+        while(prev->next != tail){
+            prev = prev->next;
+        }
+        int data = tail->data;
+        prev->next = NULL;
+        tail = prev;
+        size--;
+        return data;
+    }
+    int deleteInMiddle(int pos){
+        if(pos == 0) {
+            printf("Invalid pos!");
+            return -1;
+        }
+        if(pos == 1) {
+            return deleteFirst();
+        }
+        if(pos == size){
+            return deleteLast();
+        }
+        if(pos > size){
+            printf("Invalid pos!");
+            return -1;
+        }
+        struct Node *temp = head;
+    
+        for(int i = 1; i < pos - 1;i++){
+            temp = temp->next;
+        }
+        if(temp != NULL && temp->next != NULL){
+            int data = temp->next->data;
+            temp->next = temp->next->next;
+            return data;
+        }
+        return -1;
+    }
+    
+    void display(){
+        struct Node *temp = head;
+        while(temp != NULL){
+            printf("%d->",temp->data);
+            temp = temp->next;
+        }
+        printf("null");
+    }
+    
+    
+    void add(int val,int pri){
+        if(size == 0){
+            insertFirst(val,pri);
+            return;
+        }
+        int i = 1;
+        struct Node *temp = head;
+        while(temp != NULL){
+            if(temp->priority > pri){
+                insertInMiddle(val,pri,i);
+                break;
+              }
+              i++;
+              temp = temp->next;
+        }
+        if(temp == NULL){
+            insertLast(val,pri);
+        }
+    }
+    
+    int delete(){
+      return deleteFirst();
+    }
+    void main(){
+        add(10,5);
+        add(50,10);
+        add(50,0);
+        add(60,3);
+        add(80,2);;
+        add(90,80);
+        display();
+    }
+  `,
+    output: `
+    50->80->2->3->10->50->null
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Implement a priority queue string dynamically",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    
+    struct Node{
+        char data[100];
+        int priority;
+        struct Node *next;
+    };
+    
+    struct Node *head = NULL;
+    struct Node *tail = NULL;
+    
+    int size = 0;
+    
+    void insertFirst(char val[],int pri){
+        if(head == NULL){
+            head = (struct Node*)malloc(sizeof(struct Node));
+            strcpy(head->data,val);
+            head->priority = pri;
+            tail = head;
+            tail->next = NULL;
+            size++;
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        strcpy(newNode->data,val);
+        newNode->priority = pri;
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+    
+    void insertLast(char val[],int pri){
+        if(head == NULL){
+           insertFirst(val,pri);
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        strcpy(newNode->data,val);
+        newNode->priority = pri;
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+        size++;
+    }
+    
+    void insertInMiddle(char val[],int pri,int pos){
+        if(pos == 0) {
+            printf("Invalid pos");
+            return;
+        }
+        if(pos == 1){
+            insertFirst(val,pri);
+            return;
+        }
+         if(pos == size){
+           insertLast(val,pri);
+           return;
+        }
+    
+        if(pos > size+1){
+            printf("Invalid pos");
+            return;
+        }
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        if(newNode !=  NULL){
+          struct Node *prev = head;
+            for(int i = 1; i < pos-1;i++){
+            prev = prev->next;
+        }
+        strcpy(newNode->data,val);
+        newNode->priority = pri;
+        newNode->next = prev->next;
+        prev->next = newNode;
+        size++;
+        }else {
+            printf("LinkedList is Full!");
+        }
+       
+    }
+    
+    char* deleteFirst(){
+        if(size == 0){
+            printf("List is Empty!");
+            return NULL;
+        }
+        char *data = head->data;
+        if(size == 1){
+            head = tail = NULL;
+            size--;
+            return data;
+        }
+        head = head->next;
+        size--;
+        return data;
+    }
+    
+    
+    void display(){
+        struct Node *temp = head;
+        while(temp != NULL){
+            printf("%s->",temp->data);
+            temp = temp->next;
+        }
+        printf("null");
+    }
+    
+    
+    void add(char val[],int pri){
+        if(size == 0){
+            insertFirst(val,pri);
+            return;
+        }
+        int i = 1;
+        struct Node *temp = head;
+        while(temp != NULL){
+            if(temp->priority > pri){
+                insertInMiddle(val,pri,i);
+                break;
+              }
+              i++;
+              temp = temp->next;
+        }
+        if(temp == NULL){
+            insertLast(val,pri);
+        }
+    }
+    
+    char* delete(){
+      return deleteFirst();
+    }
+    char *peek(){
+        return head->data;
+    }
+    void main(){
+        add("by",5);
+        add("faiz",2);
+        add("hello!",1);
+        add("hmm",0);
+        delete();
+        display();
+    }
+  `,
+    output: `
+    hello!->faiz->by->null
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
     questionName: "Next greater element",
     code: `//Next greater element
     void nextGreater(int arr[],int ans[],int n){
@@ -2966,6 +3773,153 @@ Addtion of 5 with given num : 20
     8 -1 3 1 3 -1 
   `,
     type: "Stack",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Rottan oranges",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    struct NodeQ {
+        int data[2];
+        struct NodeQ *next;
+    };
+    struct NodeQ *front = NULL,*rear = NULL;
+    int sizeQ = 0;
+    void add(int val[]){
+        if(rear == NULL){
+            rear = (struct NodeQ*)malloc((sizeof(struct NodeQ)));
+            rear->data[0] = val[0];
+            rear->data[1] = val[1];
+            front = rear;
+            sizeQ++;
+            return;
+        }
+        struct NodeQ *temp = (struct NodeQ*)malloc((sizeof(struct NodeQ)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+        temp->data[0] = val[0];
+        temp->data[1] = val[1];
+        temp->next = NULL;
+        rear->next = temp;
+        rear = temp;
+        sizeQ++;
+    }
+    
+    int* remove1(){
+        if(sizeQ == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        int *val = &(front->data)[0];
+        struct NodeQ *temp = front;
+        front = front->next;
+        free(temp);
+        sizeQ--;
+        return val;
+    }
+    
+    int* peek1(){
+        if(sizeQ == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return &(front->data)[0]; 
+    }
+    void displayQ(){
+        if(front == NULL) return;
+        struct NodeQ *temp = front;
+        while(temp != NULL){
+            printf("%d ",temp->data);
+            temp = temp->next;
+        }
+    }
+    
+    int isEmptyQ(){
+     if(front == NULL) return 1;
+     return 0;
+    }
+ 
+    int rottanOrange(int mat[][3],int n){
+        // putting all rottan orange in queue.
+        for(int i = 0; i < n;i++){
+            for(int j = 0; j < n;j++){
+                if(mat[i][j] == 2) {
+                    int arr[] = {i,j};
+                    add(arr);
+                }
+            }
+        }
+        struct NodeQ *track = front;
+        int temp[] = {-1,-1};
+        int time = 0;
+        add(temp);
+    
+        while(track != NULL){
+          int r = (track->data)[0];
+          int c = (track->data)[1];
+        //   printf("[%d,%d] ",r,c);
+          track = track->next;
+          // queue empty condition
+          if(r == -1 && c == -1 && track == NULL){
+            break;
+          }else if(r == -1 && c == -1 && track != NULL){
+            time++;
+            int temp[] = {-1,-1};
+            add(temp);
+          }
+          // rooting all four sides.
+          //up
+          if(r > 0 && mat[r-1][c] == 1){
+            mat[r-1][c] = 2;
+            int arr[] = {r-1,c};
+            add(arr);
+          }
+          // down
+          if(r < n-1 && mat[r+1][c] == 1){
+            mat[r+1][c] = 2;
+            int arr[] = {r+1,c};
+            add(arr);
+          }
+          // left
+          if(c > 0  && mat[r][c-1] == 1){
+            mat[r][c-1] = 2;
+            int arr[] = {r,c-1};
+            add(arr);
+          }
+          // right
+          if(c < n-1  && mat[r][c+1] == 1){
+            mat[r][c+1] = 2;
+            int arr[] = {r,c+1};
+            add(arr);
+          }
+        }
+        return time;
+    }
+    
+    void display(){
+        struct NodeQ *temp = front;
+        do{
+        printf("[%d,%d] ",(temp->data)[0],(temp->data)[1]);
+        temp = temp->next;
+        }while(temp  != NULL);
+    }
+    void main(){
+        int mat[][3] = {
+            {0,1,2},
+            {0,1,2},
+            {2,1,1}
+        };
+        printf("Total unit time is  to rote all oranges is : %d\n",rottanOrange(mat,3));
+    }
+  `,
+    output: `
+    Total unit time is  to rote all oranges is : 1
+  `,
+    type: "queue",
     bookmarked: false,
     difficulty: "medium",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
@@ -3100,6 +4054,101 @@ Addtion of 5 with given num : 20
   `,
     output: `
     a -1 b -1 x -1 
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      " IMPLEMENT THE OPERATIONS OF SIMPLE QUEUE IN AN STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)",
+    code: `#include <stdio.h>
+    #include <string.h>
+    #define MAX 10
+    int front = -1;
+    int rear = -1;
+    int size = 0;
+    char queue[MAX][100];
+    
+    void enque(char str[]){
+        if(size == MAX){
+            printf("Queue is Full!");
+            return;
+        }
+        size++;
+        if(front == -1 && rear == -1){
+            //adding first time
+            front = rear = 0;
+            strcpy(queue[rear],str);
+            return;
+        }
+        rear++;
+        strcpy(queue[rear],str);
+    }
+    
+    char* deque(){
+        if(size == 0) {
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        char val[100];
+        if(size == 1){
+            strcpy(val,queue[front]);
+            queue[front];
+            front = rear = -1;
+            return &val[0];
+        }
+        //shifting items towards left.
+         strcpy(val,queue[front]);
+        for(int i = front+1; i <= rear;i++){
+            strcpy(queue[i-1],queue[i]);
+        }
+        rear--;
+        size--;
+        return &val[0];
+    }
+    
+    void display(){
+        if(size == 0) {
+         printf("Queue is Empty!");
+         return ;
+        }
+        for(int i = front; i <= rear;i++){
+            printf("%s ",queue[i]);
+        }
+    }
+    
+    char* peek(){
+         if(size == 0) {
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return queue[front];
+    }
+    int isEmpty(){
+        if(size == 0) return 1;
+        return 0;
+    }
+    int isFull(){
+        if(size == MAX) return 1;
+        return 0;
+    }
+    
+    
+    void main(){
+        enque("Hello");
+        enque("faiz");
+        enque("How are you ?");
+        display();    
+        dequeue();
+        printf("\\n\");
+        display();
+    }
+  `,
+    output: `
+    Hello faiz How are you ? 
+    faiz How are you ?
   `,
     type: "queue",
     bookmarked: false,
@@ -3322,34 +4371,195 @@ Addtion of 5 with given num : 20
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
+    questionName:
+      "IMPLEMENT THE OPERATIONS OF QUEUE DYNAMICALLY OF STRING (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    
+    struct Node {
+        char data[100];
+        struct Node *next;
+    };
+    
+    struct Node *front = NULL,*rear = NULL;
+    int size = 0;
+    int isEmpty(){
+        if(size == 0) return 1;
+        return 0;
+    }
+    void display(){
+        struct Node *temp = front;
+        while(temp != NULL){
+            printf("%s ",temp->data);
+            temp = temp->next;
+        }
+    }
+    void add(char str[]){
+        if(rear == NULL){
+            rear = (struct Node*)malloc((sizeof(struct Node)));
+            strcpy(rear->data,str);
+            rear->next = NULL;
+            front = rear;
+            size++;
+            return;
+        }
+        struct Node *temp = (struct Node*)malloc((sizeof(struct Node)));
+        if(temp == NULL){
+            printf("Queue if FULL!");
+            return;
+        }
+        strcpy(temp->data,str);
+        temp->next = NULL;
+        rear->next = temp;
+        rear = temp;
+        size++;
+    }
+    
+    char* remove1(){
+        if(size == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        char val[100];
+        strcpy(val,front->data);
+        struct Node *temp = front;
+        front = front->next;
+        free(temp);
+        size--;
+        return &val[0];
+    }
+    
+    char* peek(){
+        if(front == NULL){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return &(front->data)[0]; 
+    }
+    
+    
+    
+    void main(){
+        add("hello");
+        add("world");
+        display();
+        remove1();
+        printf("\n");
+        display();
+    }
+  `,
+    output: `
+    hello world 
+    world
+  `,
+    type: "queue",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
     questionName: "Find a tour that visits all the stations",
     code: `#include <stdio.h>
-    #include <string.h>
     #include <stdlib.h>
-    // Gas Station
-    int tour(int petrol[],int distance[],int n){
-        int start = 0;
-        int balance = 0;
-        int deficy = 0;
-    
-        for(int i=0;i < n;i++){
-            balance += petrol[i] - distance[i];
-            if(balance < 0){
-                deficy += balance;
-                start = i+1;
-                balance = 0;
-            }
+    struct NodeQ {
+        int data[2];
+        int indx;
+        struct NodeQ *next;
+    };
+    struct NodeQ *front = NULL,*rear = NULL;
+    int sizeQ = 0;
+    void add(int val[]){
+        if(rear == NULL){
+            rear = (struct NodeQ*)malloc((sizeof(struct NodeQ)));
+            rear->data[0] = val[0];
+            rear->data[1] = val[1];
+            rear->data[2] = val[2];
+            rear->next = NULL;
+            front = rear;
+            sizeQ++;
+            return;
         }
-        if(deficy+balance >= 0) return start;
-        return -1;
+        struct NodeQ *temp = (struct NodeQ*)malloc((sizeof(struct NodeQ)));
+        if(temp == NULL){
+            printf("Queue is FULL!");
+            return;
+        }
+        temp->data[0] = val[0];
+        temp->data[1] = val[1];
+        temp->data[2] = val[2];
+        temp->next = front;
+        rear->next = temp;
+        rear = temp;
+        sizeQ++;
+    }
+    
+    int* removeQ(){
+        if(sizeQ == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        int *val = &((front->data)[0]);
+        struct NodeQ *temp = front;
+        front = front->next;
+        free(temp);
+        sizeQ--;
+        return val;
+    }
+    
+    int* peekQ(){
+        if(sizeQ == 0){
+            printf("Queue is Empty!");
+            return NULL;
+        }
+        return &(front->data)[0]; 
+    }
+    
+    
+    int isEmptyQ(){
+     if(sizeQ) return 1;
+     return 0;
+    }
+    
+    int tour(int petrol[],int distance[]){
+        for(int i = 0; i < 4;i++){
+            int arr[]= {petrol[i],distance[i],i};
+            add(arr);
+        }
+        struct NodeQ *start;
+        rear = front;
+        start = front;
+        int bal = 0;
+        do{
+         int curPet = (rear->data)[0];
+         int curdist = (rear->data)[1];
+         bal += curPet - curdist;
+         if(bal >= 0){
+            rear = rear->next;
+         }else {
+            front = rear->next;
+            start = front;
+         }
+         if(front == rear){
+            break;
+         }
+        }while(rear != front);
+        return (start->data)[2];
+    }
+    void display(){
+        struct NodeQ *temp = front;
+        do{
+        printf("[%d,%d] ",(temp->data)[0],(temp->data)[1]);
+        temp = temp->next;
+        }while(temp  != front);
     }
     void main(){
         int petrol[] = {4,6,7,4};
         int distance[] = {6,5,3,5};
-        printf("%d ",tour(petrol,distance,4));
+        printf("Circular tour can be started from petrol pupm %d.",tour(petrol,distance));
     }
   `,
-    output: `1
+    output: `Circular tour can be started from petrol pupm 1.
   `,
     type: "queue",
     bookmarked: false,
@@ -3515,6 +4725,62 @@ Addtion of 5 with given num : 20
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
+    questionName: "Bubble sort using recursion",
+    code: `void buubleSortRe(int arr[],int r,int c,int n){
+        if(r < n-1){
+          if(c < n-1-r){
+              if(arr[c] > arr[c+1]){
+                  int temp = arr[c];
+                  arr[c] = arr[c+1];
+                  arr[c+1] = temp;
+              }
+              buubleSortRe(arr,r,c+1,n);
+          }else {
+              buubleSortRe(arr,r+1,0,n);
+          }
+        }
+      }
+      void main(){
+          int arr[] = {5,4,2,3,1};
+          buubleSortRe(arr,0,0,5);
+          printArray(arr,5);
+      }
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Selection sort using recursion",
+    code: `void selectionSortRe(int arr[],int r,int c,int n,int min){
+        if(r >= n-1) return;
+        if(c < n){
+            if(arr[c] < arr[min]){
+                min = c;
+            }
+            selectionSortRe(arr,r,c+1,n,min);
+        }else {
+            int temp = arr[r];
+            arr[r] = arr[min];
+            arr[min] = temp;
+            r = r+1;
+            c = r+1;
+            min = r;
+            selectionSortRe(arr,r,c,n,min);
+        }
+    }
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
     questionName: "Selection sort using iteration",
     code: `#include <stdio.h>
     #include <string.h>
@@ -3535,6 +4801,32 @@ Addtion of 5 with given num : 20
     selectionSort(arr,5);
     printArray(arr,5);
 }
+  `,
+    output: `1 2 3 4 5 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "Inserting sort using recursion",
+    code: `void insertionSortRec(int arr[],int c,int n){
+        if(c >= n) return;
+        int cur = arr[c];
+          int prev = c-1;
+            while(prev >=0 && arr[prev] > cur){
+                arr[prev + 1] = arr[prev];
+                prev--;
+            }
+        arr[prev+1] = cur;
+        insertionSortRec(arr,c+1,n);
+    }
+    void main(){
+        int arr[] = {5,4,2,3,1};
+        insertionSortRec(arr,0,5);
+        printArray(arr,5);
+    }
   `,
     output: `1 2 3 4 5 
   `,
@@ -3633,6 +4925,64 @@ void main(){
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
+    questionName: "Merge sort using recursion for string",
+    code: `void merge(char arr[],int s,int m,int e){
+        char temp[e-s+1];
+        int  i = s,j = m+1,k = 0;
+    
+        while(i <= m && j <= e){
+            if(arr[i] < arr[j]){
+                temp[k] = arr[i];
+                i++;
+            }else {
+                temp[k] = arr[j];
+                j++;
+            }
+            k++;
+        }
+        while(i <= m){
+                temp[k] = arr[i];
+                i++;
+                k++;
+        }
+         while(j <= e){
+            temp[k] = arr[j];
+            j++;
+            k++;
+        }
+        for(int i = 0; i < (e-s+1);i++){
+            arr[s+i] = temp[i];
+        }
+    }
+    
+    void mergeSort(char arr[],int s,int e){
+        if(s >= e) return;
+        int mid = (s+e)/2;
+        mergeSort(arr,s,mid);
+        mergeSort(arr,mid+1,e);
+        merge(arr,s,mid,e);
+    }
+// Print array
+void printArray(int arr[],int n){
+    for(int i = 0;i < n;i++){
+        printf("%d ",arr[i]);
+    }
+}
+
+void main(){
+    char arr[] = "zaif";
+    mergeSort(arr,0,4);
+    printString(arr,5);
+}
+  `,
+    output: ` a f i z 
+  `,
+    type: "sorting",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
     questionName: "Quick sort using recursion",
     code: `#include <stdio.h>
     #include <string.h>
@@ -3684,53 +5034,40 @@ void main(){
     code: `#include <stdio.h>
     #include <string.h>
     #include <stdlib.h>
-    void printString(char arr[],int n){
-      for(int i = 0;i < n;i++){
-          printf("%c ",arr[i]);
+    int partition(char arr[],int s,int e){
+      char pivot = arr[e];
+      // used to make space for element less than pivot element
+      int i = s - 1;
+      for(int j = s;j <= e;j++){
+          if(strcpm(arr[j],pivot) == -1){
+              i++;
+              int temp = arr[i];
+              arr[i] = arr[j];
+              arr[j] = temp;
+          }
       }
+      i++;
+      int temp = pivot;
+      arr[e] = arr[i];
+      arr[i] = temp;
+      return i;
   }
-  void merge(char arr[],int s,int m,int e){
-    char temp[e-s+1];
-    int  i = s,j = m+1,k = 0;
-
-    while(i <= m && j <= e){
-        if(arr[i] < arr[j]){
-            temp[k] = arr[i];
-            i++;
-        }else {
-            temp[k] = arr[j];
-            j++;
-        }
-        k++;
-    }
-    while(i <= m){
-            temp[k] = arr[i];
-            i++;
-            k++;
-    }
-     while(j <= e){
-        temp[k] = arr[j];
-        j++;
-        k++;
-    }
-    for(int i = 0; i < (e-s+1);i++){
-        arr[s+i] = temp[i];
-    }
-}
-void mergeSort(char arr[],int s,int e){
-    if(s >= e) return;
-    int mid = (s+e)/2;
-    mergeSort(arr,s,mid);
-    mergeSort(arr,mid+1,e);
-    merge(arr,s,mid,e);
-}
+  
+  void quickSort(char arr[],int s,int e){
+      if(s >= e) return;
+      int pivot = partition(arr,s,e);
+  
+      // sort for left part
+      quickSort(arr,s,pivot - 1);
+      quickSort(arr,pivot+1,e);
+  }
   
   void main(){
-      char arr[] = "zaif";
-      // printf("%d ",binarySearchRec(arr,3,0,4));
-      mergeSort(arr,0,4);
-      printString(arr,5);
+      char arr[] = "faiz";
+      quickSort(arr,0,4);
+      printArray(arr,5);
   }
+  
   `,
     output: ` a f i z 
   `,
@@ -7221,12 +8558,10 @@ void main(){
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
   {
-    questionName:
-      "FIND KTH Largest ELEMENT IN A BINARY SEARCH TREE THROUGH ARRAY",
+    questionName: "CHECK WHETHER BINARY SEARCH TREE CONTAINS DEAD END",
     code: `#include <stdio.h>
     #define MAX 30
 
-    //10. CHECK WHETHER BINARY SEARCH TREE CONTAINS DEAD END
     int containsDeadEnd(struct Tree* root){
         if(root == NULL){
             return 0;
@@ -7509,6 +8844,150 @@ void main(){
   },
   {
     questionName:
+      "CREATE ALMOST COMPLETE BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)",
+    code: `struct TNode* findNode(){
+        add(root);
+        add(NULL);
+        while(!isQEmpty()){
+            struct TNode *cur = remove1();
+            if(cur == NULL){
+                if(isQEmpty() == 1) break;
+                else {
+                    add(NULL);
+                }
+            }else {
+                if(cur->left == NULL || cur->right){
+                    return cur;
+                }
+                if(cur->left != NULL) add(cur->left);
+                if(cur->right != NULL) add(cur->right);
+            }
+        }
+        return NULL;
+    }
+    void insertAtNode(struct TNode *par,int val){
+        struct TNode *nn = (struct TNode*)malloc(sizeof(struct TNode));
+        if(par != NULL){
+            nn->data = val;
+            if(par->left == NULL){
+                par->left = nn;
+            }else {
+                par->right = nn;
+            }
+            nn->left = NULL;
+            nn->right = NULL;
+        }else {
+            printf("\nParent val does not exist!");
+        }
+    }
+    void inOrder(struct TNode *node){
+        if(node == NULL){
+            return;
+        }
+        inOrder(node->left);
+        printf("%d ",node->data);
+        inOrder(node->right);
+    }
+    int isQEmpty(){
+        if(Qsize == 0) return 1;
+        return 0;
+    }
+    void levelOrder(struct TNode *root){
+        add(root);
+        add(NULL);
+        while(!isQEmpty()){
+            struct TNode *cur = remove1();
+            if(cur == NULL){
+                if(isQEmpty() == 1) break;
+                else {
+                    add(NULL);
+                }
+            }else {
+                printf("%d ",cur->data);
+                if(cur->left != NULL) add(cur->left);
+                if(cur->right != NULL) add(cur->right);
+            }
+        }
+    
+    }
+    void buildAlmostBinaryTree(){
+        int val,choice;
+        printf("Enter a root node : ");
+        scanf("%d",&val);
+        if(root == NULL){
+            root = (struct TNode*)malloc(sizeof(struct TNode));
+            root->data = val;
+            root->left = NULL;
+            root->right = NULL;
+        }
+        while(1){
+            printf("\\n\ 1.Insert\\n\ 2.Exit\\n\ ");
+            scanf("%d",&choice);
+            if(choice == 1){
+            struct TNode *par = findNode();
+            printf("\\n\ Enter value : ");
+            scanf("%d",&val);
+            insertAtNode(par,val);
+            }else if(choice == 2){
+                break;
+            }else {
+                printf("\\n\ Invalid choice!");
+            }
+        }
+         printf("\\n\ Level order of Tree : ");
+         levelOrder(root);
+    }
+    void main(){
+        buildAlmostBinaryTree();
+    }
+    
+  `,
+    output: `
+    Enter a root node : 1
+
+    1.Insert
+    2.Exit  
+    1
+    
+    Enter value : 2
+    
+    1.Insert
+    2.Exit  
+    1
+    
+    Enter value : 3
+    
+    1.Insert
+    2.Exit  
+    1
+    
+    Enter value : 4
+    
+    1.Insert
+    2.Exit  
+    1
+    
+    Enter value : 5
+    
+    1.Insert
+    2.Exit  
+    1
+    
+    Enter value : 6
+    
+    1.Insert
+    2.Exit
+    2
+    
+    Level order of Tree : 1 2 3 4 5 6
+  `,
+    type: "binarytree",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
       "CREATE STRICTLY BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)",
     code: `#include <stdio.h>
     struct Tree* getNode(struct Tree* root,int val){
@@ -7620,6 +9099,432 @@ void main(){
     type: "binarytree",
     bookmarked: false,
     difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "ENTER THE VERTICES AND EDGES AND REPRESENT IN ADJACENCY MATRIX AND PRINT IT.",
+    code: `#include <stdio.h>
+
+
+    int findElem(int elem,int n,int arr[]){
+        for(int i = 0;i < n;i++){
+            if(arr[i] == elem) return 1;
+        }
+        return 0;
+    }
+    
+    void adjacentMatrix(){
+        int n = 5;
+        int vertex[n];
+        int matrix[n][n];
+        for(int i = 0;i < n;i++){
+             for(int j = 0;j < n;j++){
+                matrix[i][j] = 0;
+            }
+        }
+        int indx = 0,choice,src,dest;
+        while(indx < n){
+            printf("\\n\----Select Choice----\\n\ 1.Insert vertex\\n\ 2.Insert edge\\n\ 3.Exit\\n\");
+            scanf("%d",&choice);
+            if(choice == 1){
+                printf("\\n\Enter value of vertex : ");
+                scanf("%d",&vertex[indx]);
+                indx++;
+            }else if(choice == 2){
+                printf("\\n\Enter src and destination vertex respectively : ");
+                scanf("%d%d",&src,&dest);
+                int isSrc = findElem(src,n,vertex);
+                int isDest = findElem(dest,n,vertex);
+                if(src >= n || dest >= n || src < 0 || dest < 0 || isSrc == 0 || isDest == 0){
+                    printf("\\n\ Invalid path!");
+                }else {
+                    matrix[src][dest] = 1;
+                    matrix[dest][src] = 1;
+                }
+            }else if(choice == 3){
+                break;
+            }
+            else {
+                printf("\\n\Invalid choice!");
+            }
+        }
+        // print matrix
+      for(int i = 0;i < n;i++){
+             for(int j = 0;j < n;j++){
+                printf("%d ",matrix[i][j]);
+            }
+            printf("\\n\");
+        }
+    }
+    
+    void main(){
+        adjacentMatrix();
+    }
+  `,
+    output: `
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Exit
+    1
+    
+    Enter value of vertex : 1
+    
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Exit
+    1
+    
+    Enter value of vertex : 2
+    
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Exit
+    1
+    
+    Enter value of vertex : 3
+    
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Exit
+    1
+    
+    Enter value of vertex : 4
+    
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Exit
+    2
+    
+    Enter src and destination vertex respectively : 1 2
+    
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Exit
+    2
+    
+    Enter src and destination vertex respectively : 2 3
+    
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Exit
+    2
+    
+    Enter src and destination vertex respectively : 2 
+    4
+    
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Exit
+    3
+    0 0 0 0 0 
+    0 0 1 0 0
+    0 1 0 1 1
+    0 0 1 0 0
+    0 0 1 0 0
+  `,
+    type: "graph",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "CREATE THE GRAPH AS A ADJACENCY LIST WITH OPERATIONS SUCH AS INSERTION, DELETION.",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    struct Edge{
+        int data;
+        struct Edge *next;
+    };
+    
+    struct Vertex{
+        struct Vertex *next;
+        int data;
+        struct Edge *edge;
+    };
+    
+    struct Vertex *start = NULL;
+    struct Vertex *end = NULL;
+    int size = 0;
+    
+    int search(int val){
+        if(size == 0) return 0;
+        struct Vertex *temp = start;
+        while(temp != NULL){
+            if(temp->data == val) return 1;
+            temp = temp->next;
+        }
+        return 0;
+    }
+    
+    void insert(int val){
+        if(start == NULL){
+            start = (struct Vertex*)malloc(sizeof(struct Vertex));
+            start->data = val;
+            start->next = NULL;
+            start->edge = NULL;
+            end = start;
+            size++;
+            return;
+        }
+        if(search(val) == 0){
+            struct Vertex *nn = (struct Vertex*)malloc(sizeof(struct Vertex));
+            if(nn != NULL){
+            nn->data = val;
+            nn->next = NULL;
+            nn->edge = NULL;
+            end->next = nn;
+            end = nn;
+            size++;
+            }
+        }else {
+            printf("\\n\ Dublicate vertex is not allowed!");
+        }
+    }
+    
+    struct Vertex* getNode(int val){
+        struct Vertex *temp = start;
+         while(temp != NULL){
+            if(temp->data == val) return temp;
+            temp = temp->next;
+        }
+        return NULL;
+    }
+    
+    void insertEdge(int src,int dest){
+        if(search(src) && search(dest)){
+            printf("edge!");
+            struct Vertex *srcVertex = getNode(src);
+            struct Edge *temp = (struct Edge*)malloc(sizeof(struct Edge));
+            struct Edge *e = (struct Edge*)malloc(sizeof(struct Edge));
+            e->data = dest;
+            e->next = NULL;
+            if(srcVertex->edge == NULL){
+                srcVertex->edge = e;
+                return;
+            }
+            temp = srcVertex->edge;
+            while(temp->next != NULL){
+                temp = temp->next;
+            }
+            temp->next = e;
+        }else {
+            printf("\\n\ Invalid src and dest!");
+        }
+    }
+    
+    void printGraph(){
+        struct Vertex *i = start;
+        while(i != NULL){
+            printf("%d->",i->data);
+            struct Edge *j = i->edge;
+            while(j != NULL){
+                printf("%d ",j->data);
+                j = j->next;
+            }
+            i = i->next;
+            printf("\\n\ ");
+        }
+    }
+    struct Vertex* getParent(int val){
+         struct Vertex *temp = start;
+         struct Vertex *prev = NULL;
+         while(temp->data != val){
+            prev = temp;
+            temp = temp->next;
+        }
+        return prev;
+    }
+    void delete(int val){
+        if(start->data == val){
+            start = start->next;
+        }
+        struct Vertex *par = getParent(val);
+        // delete vertex.
+        if(par != NULL && par->next != NULL){
+            par->next = par->next->next;
+        }
+        // delete edge.
+        struct Vertex *i = start;
+        while(i != NULL){
+            if(i->edge != NULL && i->edge->data == val){
+                i->edge = i->edge->next;
+                return;
+            }
+            struct Edge *prev = NULL;
+            struct Edge *j = i->edge;
+            while(j != NULL && j->data != val){
+                prev = j;
+                j = j->next;
+            }
+            if(prev != NULL){
+                prev->next = prev->next->next;
+            }
+            i = i->next;
+        }
+    }
+    
+    void adjacentList(){
+        int choice;
+        int src,dest,val;
+        while(1){
+         printf("\\n\ ----Select Choice----\\n\ 1.Insert vertex\\n\ 2.Insert edge\\n\ 3.Delete\\n\ 4.Exit\\n\ ");
+         scanf("%d",&choice);
+            if(choice == 1){
+                printf("\\n\ Enter value of vertex : ");
+                scanf("%d",&val);
+                insert(val);
+            }else if(choice == 2){
+                printf("\\n\ Enter src and destination vertex respectively : ");
+                scanf("%d%d",&src,&dest);
+                insertEdge(src,dest);
+            }else if(choice == 3){
+                printf("\\n\ Enter value of vertex : ");
+                scanf("%d",&val);
+                delete(val);
+            }else if(choice == 4) break;
+            else {
+                printf("\\n\ Invalid choice!");
+            }
+       }
+       printGraph();
+    }
+    
+    void main(){
+        adjacentList();
+    }
+  `,
+    output: `
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Delete
+    4.Exit
+    1
+    
+    Enter value of vertex : 1
+    
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Delete
+    4.Exit
+    1
+    
+    Enter value of vertex : 2
+    
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Delete
+    4.Exit
+    1
+    
+    Enter value of vertex : 3
+    
+    ----Select Choice----
+    1.Insert vertex      
+    2.Insert edge        
+    3.Delete
+    4.Exit
+    1
+    
+    Enter value of vertex : 4
+    
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    2
+    
+    Enter src and destination vertex respectively : 1 4
+    edge!
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    1 2
+    
+    Enter value of vertex :
+    Dublicate vertex is not allowed!
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    2
+    
+    Enter src and destination vertex respectively : 1 2
+    edge!
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    2
+    
+    Enter src and destination vertex respectively : 1 3
+    edge!
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    2
+    
+    Enter src and destination vertex respectively : 2 3
+    edge!
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    2
+    
+    Enter src and destination vertex respectively : 2 4
+    edge!
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    2
+    
+    Enter src and destination vertex respectively : 2 1
+    edge!
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    3
+    
+    Enter value of vertex : 3
+    
+    ----Select Choice----
+    1.Insert vertex
+    2.Insert edge
+    3.Delete
+    4.Exit
+    4
+    1->4 2 
+    2->4 1
+    4->    
+  `,
+    type: "graph",
+    bookmarked: false,
+    difficulty: "hard",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
 ];

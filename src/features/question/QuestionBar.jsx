@@ -29,6 +29,7 @@ function QuestionBar() {
             <option value="queue">Queue</option>
             <option value="binarytree">Binary Trees</option>
             <option value="linkedlist">Linked list</option>
+            <option value="graph">Graph</option>
           </select>
         </div>
 

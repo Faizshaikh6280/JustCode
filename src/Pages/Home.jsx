@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 function Home() {
   return (
-    <div className="">
-      I'm Home
-      <Link to="/app">App</Link>
+    <div className="home">
+      <h1>justCode{"</>"}</h1>
     </div>
   );
 }
