@@ -1039,6 +1039,40 @@ Second array elements : 1 2 `,
     timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
   },
   {
+    questionName:
+      " ENTER THE STRING FROM USER AND CONVERT CHARACTERS INTO THEIR ASCII VALUES IN THE INTEGER ARRAY. [FOR EXAMPLE TAKE 10 CHARACTERS]",
+    code: `#include <stdio.h>
+    #include <string.h>
+    void convertIntoAscii(char str[],int arr[],int n){
+        for(int i = 0;i < n;i++){
+            arr[i] = (int)str[i];
+        }
+    }
+    void printArr(int arr[],int n){
+        for(int i = 0; i < n;i++){
+          printf("%d ",arr[i]);
+      }
+  }
+  void main(){
+      char str[50];
+      printf("Enter a string : ");
+      scanf("%s",str);
+      int n = strlen(str);
+      int arr[n];
+      convertIntoAscii(str,arr,n);
+      printArr(arr,n);
+  }
+  
+  `,
+    output: `Enter a string : faiz
+    102 97 105 122 
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
     questionName: "convert in lower",
     code: `char toLowerCase(char ch){
       return (char)(ch|' ');
@@ -1064,6 +1098,33 @@ Second array elements : 1 2 `,
     output: `Enter the size of the string : 5
     Enter a string : FaiZ
     Lower case form : faiz
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "easy",
+    timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      " ENTER THE STRING FROM USER AND SPLITS THE FIRST WORD AND SECOND WORD AND RETURN THE START INDEX OF THE SECOND WORD.",
+    code: `int splitWord(char str[]){
+        for(int i=0;i < strlen(str);i++){
+            if(i >= 1 && str[i] == ' '){
+                return i+1;
+            }
+        }
+    }
+    void main(){
+        char str[50];
+        printf("Enter a string : ");
+        gets(str);
+        printf("%d",splitWord(str));
+    }
+    
+    
+  `,
+    output: `Enter a string : faiz alam
+    5
   `,
     type: "string",
     bookmarked: false,
@@ -1420,6 +1481,98 @@ void main(){
     bookmarked: false,
     difficulty: "easy",
     timeAndSpace: `Time Complexity is : O(N) \n Space Complexity is O(1)`,
+  },
+  {
+    questionName:
+      "DISPLAY THE STRING ON THE OUTPUT SCREEN BUT ASK THE TEXT ALIGNMENT OPTION GIVEN BY THE USER (1 FOR LEFT, 2 FOR CENTER, 3 RIGHT)",
+    code: `
+    void centerText(char *text, int fieldWidth) {
+        int padlen = (fieldWidth - strlen(text)) / 2;
+        printf("|");
+        printf("%*s%s%*s", padlen, "", text, padlen, "");
+        printf("|\\n\ ");
+    
+    } 
+    void rightAlign(char *text,int fieldWidth){
+        int spaces = (fieldWidth - strlen(text));
+        printf("|");
+        printf("%*s",spaces,text);
+        printf("|\\n\ ");
+    
+    }
+    void textAlignment(){
+        int choice;
+        int fieldWidth;
+        char str[] = "hello world";
+        while(1){
+          printf("\\n\ ---Select your choice---\\n\ 1.Left Align\\n\ 2.Center align\\n\ 3.Right align\\n\ 4.exit\\n\ ");
+          scanf("%d",&choice);
+          if(choice == 1){
+            printf("\\n\ %s",str);
+          }else if(choice == 2){
+            printf("\\n\ Enter field wdth");
+            scanf("%d",&fieldWidth);
+            centerText(str,fieldWidth);
+          }else if(choice == 3){
+            printf("\\n\ Enter field wdth");
+            scanf("%d",&fieldWidth);
+            rightAlign(str,fieldWidth);
+          }else if(choice == 4){
+            break;
+          }else {
+            printf("\\n\ Invalid choice!");
+          }
+    
+        }
+    }
+    void main(){
+        textAlignment();
+    }
+    
+    
+  `,
+    output: `---Select your choice---
+    1.Left Align
+    2.Center align
+    3.Right align
+    4.exit
+    3
+    
+    Enter field wdth10
+    |hello world|
+    
+    ---Select your choice---
+    1.Left Align
+    2.Center align
+    3.Right align
+    4.exit
+    3
+    
+    Enter field wdth50
+    |                            hello world|
+    
+    ---Select your choice---
+    1.Left Align
+    2.Center align
+    3.Right align
+    4.exit
+    2
+    
+    Enter field wdth20
+    |    hello world    |   
+    
+    ---Select your choice---
+    1.Left Align
+    2.Center align
+    3.Right align
+    4.exit
+    3
+    
+  `,
+    type: "string",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\  Space Complexity is O(1)`,
   },
   {
     questionName: "Copy reverse order into another string",
