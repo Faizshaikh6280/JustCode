@@ -9680,6 +9680,337 @@ void main(){
     difficulty: "hard",
     timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
   },
+  {
+    questionName: "TRAVERSE THE ADJACENT MATRIX WITH BREADTH FIRST SEARCH",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    //Queue
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *front = NULL,*rear = NULL;
+int Qsize = 0;
+int isEmpty(){
+    if(Qsize == 0){
+        return 1;
+    }
+    return 0;
+}
+void add(int val){
+    if(rear == NULL){
+        rear = (struct Node*)malloc((sizeof(struct Node)));
+        rear->data = val;
+        rear->next = NULL;
+        front = rear;
+        Qsize++;
+        return;
+    }
+    struct Node *temp = (struct Node*)malloc((sizeof(struct Node)));
+    if(temp == NULL){
+        printf("Queue if FULL!");
+        return;
+    }
+    temp->data = val;
+    temp->next = NULL;
+    rear->next = temp;
+    rear = temp;
+    Qsize++;
+}
+
+int remove1(){
+    if(Qsize == 0){
+        printf("Queue is Empty!");
+        return -1;
+    }
+    int val = front->data;
+    struct Node *temp = front;
+    front = front->next;
+    free(temp);
+    Qsize--;
+    return val;
+}
+
+int peek(){
+    if(front == NULL){
+        printf("Queue is Empty!");
+        return -1;
+    }
+    return front->data; 
+}
+    void createGraph(){
+        matrix[0][1] = 1;
+        matrix[0][2] = 1;
+    
+        matrix[1][3] = 1;
+        matrix[1][2] = 1;
+    
+        matrix[2][4] = 1;
+    
+        matrix[3][4] = 1;
+        matrix[3][5] = 1;
+    
+        matrix[4][5] = 1;
+    
+        matrix[5][6] = 1;
+    }
+    void BFS(){
+        // entring first vertex
+        for(int i = 0;i < SIZE;i++){
+             for(int j = 0;j < SIZE;j++){
+                if(matrix[i][j] != 0) {
+                    add(i);
+                    break;
+                }
+            }
+        }
+        // visited array;
+        int visited[SIZE];
+        for(int i = 0;i < SIZE;i++) visited[i] = 0;
+        while(isEmpty() == 0){
+            int cur = remove1();
+            if(visited[cur] == 0) printf("%d ",cur);
+            visited[cur] = 1;
+            for(int j = 0;j < SIZE;j++){
+                if(cur != j && matrix[cur][j] != 0 && visited[j] == 0){
+                    add(j);
+                }
+            }
+        }
+    }
+    
+    void main(){
+        createGraph();
+        BFS();
+    }
+  `,
+    output: `
+    0 1 2 3 4 5 6 
+  `,
+    type: "graph",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "TRAVERSE THE ADJACENT MATRIX WITH DEPTH FIRST SEARCH",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    void DFSUtil(int src,int vis[]){
+        if(vis[src] == 0){
+            printf("%d ",src);
+           vis[src] = 1;
+          // visiting neghbours
+        for(int dest = 0;dest < SIZE;dest++){
+            if(src != dest && vis[dest] == 0 && matrix[src][dest] == 1){
+            DFSUtil(dest,vis);
+            }
+        }
+    }
+    }
+    
+    void DFS(){
+        int visited[SIZE];
+        for(int i = 0;i < SIZE;i++) visited[i] = 0;
+        for(int i = 0;i < SIZE;i++){
+            if(visited[i] == 0) {
+                DFSUtil(i,visited);
+            }
+        }
+    }
+    
+    
+    
+    void main(){
+        createGraph();
+        printf("BFS : ");
+        BFS();
+        printf("\\n\ DFS : ");
+        DFS();
+    }
+  `,
+    output: `
+    BFS : 0 1 2 3 4 5 6 
+    DFS : 0 1 2 4 5 6 3 
+  `,
+    type: "graph",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "TRAVERSE THE ADJACENT List WITH DEPTH FIRST SEARCH",
+    code: `#include <stdio.h>
+    #include <stdlib.h>
+    struct Vertex* getNode(int val){
+        struct Vertex *temp = start;
+         while(temp != NULL){
+            if(temp->data == val) return temp;
+            temp = temp->next;
+        }
+        return NULL;
+    }
+    
+    void insertEdge(int src,int dest){
+        if(search(src) && search(dest)){
+            struct Vertex *srcVertex = getNode(src);
+            struct Edge *temp = (struct Edge*)malloc(sizeof(struct Edge));
+            struct Edge *e = (struct Edge*)malloc(sizeof(struct Edge));
+            e->data = dest;
+            e->next = NULL;
+            if(srcVertex->edge == NULL){
+                srcVertex->edge = e;
+                return;
+            }
+            temp = srcVertex->edge;
+            while(temp->next != NULL){
+                temp = temp->next;
+            }
+            temp->next = e;
+        }else {
+            printf("\\\nInvalid src and dest!");
+        }
+    }
+    
+    void createGraph(){
+        for(int i = 0; i < SIZE;i++){
+            insert(i);
+        } 
+        insertEdge(0,1);
+        insertEdge(0,2);
+    
+        insertEdge(1,2);
+        insertEdge(1,3);
+    
+        insertEdge(2,4);
+    
+        insertEdge(3,4);
+        insertEdge(3,5);
+    
+        insertEdge(4,5);
+    
+        insertEdge(5,6);
+    }
+    
+   
+    
+    void createGraph(){
+        for(int i = 0; i < SIZE;i++){
+            insert(i);
+        } 
+        insertEdge(0,1);
+        insertEdge(0,2);
+    
+        insertEdge(1,2);
+        insertEdge(1,3);
+    
+        insertEdge(2,4);
+    
+        insertEdge(3,4);
+        insertEdge(3,5);
+    
+        insertEdge(4,5);
+    
+        insertEdge(5,6);
+    }
+    
+    void DFSUtil(int src,int vis[]){
+        if(vis[src] == 0){
+            printf("%d ",src);
+        }
+        vis[src] = 1;
+        // visiting neighur
+         struct Vertex *node = getNode(src);
+         struct Edge *j = node->edge;
+          while(j != NULL && j->data != src){
+            DFSUtil(j->data,vis);
+            j = j->next;
+        }
+    }
+    void DFS(){
+         int vis[SIZE];
+        for(int i = 0;i < SIZE;i++) vis[i] = 0;
+        for(int i = 0;i < SIZE;i++) {
+            if(vis[i] == 0){
+                DFSUtil(i,vis);
+            }
+         }
+    }
+    void main(){
+        createGraph();
+        DFS();
+    }
+  `,
+    output: `
+     0 1 2 4 5 6 3 
+  `,
+    type: "graph",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
+  {
+    questionName: "TRAVERSE THE ADJACENT List WITH Breadth FIRST SEARCH",
+    code: `#include <stdio.h>
+    void createGraph(){
+        for(int i = 0; i < SIZE;i++){
+            insert(i);
+        } 
+        insertEdge(0,1);
+        insertEdge(0,2);
+    
+        insertEdge(1,2);
+        insertEdge(1,3);
+    
+        insertEdge(2,4);
+    
+        insertEdge(3,4);
+        insertEdge(3,5);
+    
+        insertEdge(4,5);
+    
+        insertEdge(5,6);
+    }
+    
+    void BFS(){
+        int vis[SIZE];
+        for(int i = 0;i < SIZE;i++) vis[i] = 0;
+        // adding first vertex.
+        for(int i = 0;i < SIZE;i++) {
+            if(vis[i] == 0){
+                add(i);
+                break;
+            }
+         }
+        while(isEmpty() == 0){
+            int cur = remove1();
+            if(vis[cur] == 0){
+              printf("%d ",cur);
+            }
+            vis[cur] = 1;
+             //adding neighbour into queue.
+               struct Vertex *node = getNode(cur);
+               struct Edge *j = node->edge;
+                 while(j != NULL && j->data != cur){
+                    add(j->data);
+                    j = j->next;
+               }
+        }
+    }
+    void main(){
+        createGraph();
+        BFS();
+    }
+  `,
+    output: `
+    0 1 2 3 4 5 6 
+  `,
+    type: "graph",
+    bookmarked: false,
+    difficulty: "medium",
+    timeAndSpace: `Time Complexity is : O(N) \\n\ Space Complexity is O(1)`,
+  },
 ];
 
 questions.forEach((ques, indx) => {
