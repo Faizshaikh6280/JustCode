@@ -9,7 +9,7 @@ function BookMarkItem({ question }) {
         question.id === currentQuestion.id ? "border-light border-l-2" : ""
       } px-4 py-3 flex justify-between text-base`}
     >
-      <Link to={`/app/questions/${question.id}`}>
+      <Link to={`/questions/${question.id}`}>
         <h4 className="text-light hover:text-themeblue">
           {question.id}. {question.questionName}
         </h4>
